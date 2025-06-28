@@ -17,7 +17,7 @@ class PublisherFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $name = fake()->company(),
+            'name' => $name = fake('id_ID')->company(),
             'slug' => str()->lower(str()->slug($name) . str()->random(4)),
             'address' => fake('id_ID')->address(),
             'email' => fake('id_ID')->unique()->safeEmail(),
