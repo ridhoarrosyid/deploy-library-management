@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+
 
 if (!function_exists('flashMessage')) {
   function flashMessage($message, $type = 'success'): void
