@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum BookLanguage: string
 {
-  case ENGLISH = 'english';
-  case INDONESIA = 'indonesia';
-  case JAPAN = 'japan';
+  case ENGLISH = 'English';
+  case INDONESIA = 'Indonesia';
+  case JAPAN = 'Japan';
 
   public static function options(): array
   {

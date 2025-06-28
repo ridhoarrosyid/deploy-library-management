@@ -8,7 +8,7 @@ enum BookStatus: string
   case UNAVAILABLE = 'Tidak Tersedia';
   case LOAN = 'Dipinjam';
   case LOST = 'Hilang';
-  case DAMAGED = 'RUSAK';
+  case DAMAGED = 'Rusak';
 
   public static function options(): array
   {
