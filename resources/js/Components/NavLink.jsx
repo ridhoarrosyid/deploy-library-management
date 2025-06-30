@@ -10,7 +10,7 @@ export default function NavLink({ active = false, url = '#', title, icon: Icon, 
         active
           ? 'bg-gradient-to-r from-orange-400 via-orange-600 to-orange-500 font-semibold text-white hover:text-white'
           : 'text-muted-foreground hover:text-orange-500',
-        'flex items-center gap-3 rounded-lg font-medium transition-all',
+        'flex items-center gap-3 rounded-lg px-3 font-medium transition-all',
       )}
     >
       <Icon className="size-4" />
