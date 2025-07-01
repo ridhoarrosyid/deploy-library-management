@@ -8,6 +8,10 @@ use Inertia\Inertia;
 
 Route::redirect('/', 'login');
 
+Route::get('/test', function () {
+    return Inertia::render('Test');
+});
+
 Route::controller(DashboardController::class)->middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', 'index')->name('dashboard');

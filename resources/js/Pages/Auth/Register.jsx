@@ -9,6 +9,7 @@ import { Link, useForm } from '@inertiajs/react';
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
+    username: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -38,9 +39,8 @@ export default function Register() {
             </div>
             <form onSubmit={onHandleSubmit}>
               <div className="grid gap-4">
-                {' '}
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
+                  <Label for="name">Name</Label>
 
                   <Input
                     id="name"
@@ -53,11 +53,22 @@ export default function Register() {
 
                   {errors.name && <InputError message={errors.name} />}
                 </div>
-              </div>
-
-              <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label for="username">Username</Label>
+
+                  <Input
+                    id="username"
+                    name="username"
+                    value={data.username}
+                    autoComplete="username"
+                    isFocused={true}
+                    onChange={onHandleChange}
+                  />
+
+                  {errors.username && <InputError message={errors.username} />}
+                </div>
+                <div className="grid gap-2">
+                  <Label for="email">Email</Label>
 
                   <Input
                     id="email"
@@ -70,11 +81,8 @@ export default function Register() {
 
                   {errors.email && <InputError message={errors.email} />}
                 </div>
-              </div>
-
-              <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label for="password">Password</Label>
 
                   <Input
                     id="password"
@@ -87,11 +95,8 @@ export default function Register() {
 
                   {errors.password && <InputError message={errors.password} />}
                 </div>
-              </div>
-
-              <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
+                  <Label for="password_confirmation">Konfirmasi Password</Label>
 
                   <Input
                     id="password_confirmation"

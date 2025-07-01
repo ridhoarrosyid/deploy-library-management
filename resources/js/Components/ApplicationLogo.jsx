@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
-import { IconInnerShadowBottomRight } from '@tabler/icons-react';
+import IconInnerShadowBottomRight from './icons/IconInnerShadowBottomRight';
 
 export default function ApplicationLogo({ url = '#', size = 'size-9', isTitle = true }) {
   return (

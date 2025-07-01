@@ -1,25 +1,23 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavLinkResponsive from '@/Components/NavLinkResponsive';
-import {
-  IconBooks,
-  IconBuildingCommunity,
-  IconCategory,
-  IconChartDots2,
-  IconCircleKey,
-  IconCreditCardPay,
-  IconCreditCardRefund,
-  IconDashboard,
-  IconKeyframe,
-  IconLayoutKanban,
-  IconLogout,
-  IconMoneybag,
-  IconRoute,
-  IconSettingsExclamation,
-  IconStack3,
-  IconUser,
-  IconUsersGroup,
-  IconVersions,
-} from '@tabler/icons-react';
+import IconBooks from '@/Components/icons/IconBooks';
+import IconBuildingCommunity from '@/Components/icons/IconBuildingCommunity';
+import IconCategory from '@/Components/icons/IconCategory';
+import IconChartDots2 from '@/Components/icons/IconChartDots2';
+import IconCircleKey from '@/Components/icons/IconCircleKey';
+import IconCreditCardPay from '@/Components/icons/IconCreditCardPay';
+import IconCreditCardRefund from '@/Components/icons/IconCreditCardRefund';
+import IconDashboard from '@/Components/icons/IconDashboard';
+import IconKeyframe from '@/Components/icons/IconKeyframe';
+import IconLayoutKanban from '@/Components/icons/IconLayoutKanban';
+import IconLogout from '@/Components/icons/IconLogout';
+import IconMoneybag from '@/Components/icons/IconMoneybag';
+import IconRoute from '@/Components/icons/IconRoute';
+import IconSettingsExclamation from '@/Components/icons/IconSettingsExclamation';
+import IconStack3 from '@/Components/icons/IconStack3';
+import IconUser from '@/Components/icons/IconUser';
+import IconUsersGroup from '@/Components/icons/IconUsersGroup';
+import IconVersions from '@/Components/icons/IconVersions';
 
 export default function SidebarResponsive({ url, auth }) {
   return (
