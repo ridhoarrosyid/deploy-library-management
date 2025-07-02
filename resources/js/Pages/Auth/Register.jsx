@@ -39,7 +39,7 @@ export default function Register() {
             <form onSubmit={onHandleSubmit}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label for="name">Name</Label>
+                  <Label htmlFor="name">Name</Label>
                   <Input
                     id="name"
                     name="name"
@@ -53,7 +53,7 @@ export default function Register() {
                 </div>
 
                 <div className="grid gap-2">
-                  <Label for="email">Email</Label>
+                  <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
                     type="email"
@@ -66,7 +66,7 @@ export default function Register() {
                   {errors.email && <InputError message={errors.email} />}
                 </div>
                 <div className="grid gap-2">
-                  <Label for="password">Password</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
@@ -79,7 +79,7 @@ export default function Register() {
                   {errors.password && <InputError message={errors.password} />}
                 </div>
                 <div className="grid gap-2">
-                  <Label for="password_confirmation">Konfirmasi Password</Label>
+                  <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
                   <Input
                     id="password_confirmation"
                     type="password"

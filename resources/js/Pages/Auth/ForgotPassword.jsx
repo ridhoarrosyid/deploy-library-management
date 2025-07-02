@@ -40,7 +40,7 @@ export default function ForgotPassword({ status }) {
               <form onSubmit={onHandleSubmit}>
                 <div className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label for="email">Email</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
                       type="email"

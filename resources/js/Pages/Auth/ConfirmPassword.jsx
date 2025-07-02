@@ -30,7 +30,7 @@ export default function ConfirmPassword() {
       <CardContent>
         <form onSubmit={onHandleSumbit}>
           <div className="mt-4">
-            <Label for="password">Password</Label>
+            <Label htmlFor="password">Password</Label>
 
             <Input
               id="password"

@@ -43,7 +43,7 @@ export default function Login({ status, canResetPassword }) {
             <form onSubmit={onHandleSubmit}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label for="email">Label</Label>
+                  <Label htmlFor="email">Email</Label>
 
                   <Input
                     id="email"
@@ -58,7 +58,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center">
-                    <Label for="password">Password</Label>
+                    <Label htmlFor="password">Password</Label>
                     {canResetPassword && (
                       <Link href={route('password.request')} className="ml-auto inline-block text-sm underline">
                         Lupa Password
@@ -85,7 +85,7 @@ export default function Login({ status, canResetPassword }) {
                       onCheckedChange={(checked) => setData('remember', checked)}
                     />
                     <div className="grid gap-1.5 leading-none">
-                      <Label for="remeber">Ingat Saya</Label>
+                      <Label htmlFor="remember">Ingat Saya</Label>
                     </div>
                   </div>
                   {errors.remember && <InputError message={errors.remember} />}
