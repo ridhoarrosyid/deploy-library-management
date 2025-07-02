@@ -25,7 +25,7 @@ class CategoryController extends Controller
         return Inertia::render('Admin/Categories/Index', [
             'categories' => CategoryResourse::collection($categories),
             'page_settings' => [
-                'title' => 'Kategory',
+                'title' => 'Kategori',
                 'subtitle' => 'Menampilkan semua kategory yang ada di platform ini'
             ]
         ]);
@@ -60,8 +60,47 @@ class CategoryController extends Controller
             return to_route('admin.categories.index');
         }
     }
-    public function edit($category)
+
+    public function edit(Category $category): Response
     {
-        return $category;
+        return Inertia::render('Admin/Categories/Edit', [
+            'page_settings' => [
+                'title' => 'Edit Kategori',
+                'subtitle' => 'Edit kategori di sini. Klik simpan ketika sudah selesai.',
+                'method' => 'PUT',
+                'action' => route('admin.categories.update', $category)
+            ],
+            'category' => $category
+        ]);
+    }
+
+    public function update(Category $category, CategoryRequest $request): RedirectResponse
+    {
+        try {
+            $category->update([
+                'name' => $name = $request->name,
+                'slug' => $name !== $category->name ?  str()->lower(str()->slug($name) . str()->random(4)) : $category->slug,
+                'description' => $request->description,
+                'cover' => $this->updateFile($request, $category, 'cover', 'categories')
+            ]);
+            flashMessage(MessageType::UPDATED->message('Kategori'));
+            return to_route('admin.categories.index');
+        } catch (Throwable $e) {
+            flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+            return to_route('admin.categories.index');
+        }
+    }
+
+    public function destroy(Category $category): RedirectResponse
+    {
+        try {
+            $this->deleteFile($category, 'cover');
+            $category->delete();
+            flashMessage(MessageType::DELETED->message('Kategori'));
+            return to_route('admin.categories.index');
+        } catch (Throwable $e) {
+            flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+            return to_route('admin.categories.index');
+        }
     }
 }
