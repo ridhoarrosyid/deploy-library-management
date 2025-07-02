@@ -60,4 +60,8 @@ class CategoryController extends Controller
             return to_route('admin.categories.index');
         }
     }
+    public function edit()
+    {
+        return '';
+    }
 }

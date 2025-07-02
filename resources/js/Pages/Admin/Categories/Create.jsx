@@ -44,7 +44,7 @@ export default function Create(props) {
       <div className="mb-8 flex flex-col items-start justify-between gap-y-4 lg:flex-row lg:items-center">
         <HeaderTitle title={props.page_settings.title} subtitle={props.page_settings.subtitle} icon={IconCategory} />
         <Button variant="orange" size="lg" asChild>
-          <Link href={route('admin.category.index')}>
+          <Link href={route('admin.categories.index')}>
             <IconArrowLeft className={'size-4'} /> Kembali
           </Link>
         </Button>
