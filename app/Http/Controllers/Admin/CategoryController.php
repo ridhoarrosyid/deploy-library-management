@@ -21,12 +21,25 @@ class CategoryController extends Controller
     {
         $categories = Category::query()
             ->select(['id', 'name', 'slug', 'cover', 'created_at'])
-            ->get();
+            ->filter(request()->only(['search']))
+            ->sorting(request()->only('field', 'direction'))
+            ->paginate(request()->load ?? 10)
+            ->withQueryString();
         return Inertia::render('Admin/Categories/Index', [
-            'categories' => CategoryResourse::collection($categories),
+            'categories' => CategoryResourse::collection($categories)
+                ->additional([
+                    'meta' => [
+                        'has_pages' => $categories->hasPages()
+                    ]
+                ]),
             'page_settings' => [
                 'title' => 'Kategori',
                 'subtitle' => 'Menampilkan semua kategory yang ada di platform ini'
+            ],
+            'state' => [
+                'page' => request()->page ?? 1,
+                'search' => request()->search ?? '',
+                'load' =>  10
             ]
         ]);
     }
