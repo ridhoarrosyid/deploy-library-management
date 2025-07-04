@@ -1,6 +1,6 @@
 import HeaderTitle from '@/Components/HeaderTitle';
 import IconArrowDownUp from '@/Components/icons/IconArrowDownUp';
-import IconCategory from '@/Components/icons/IconCategory';
+import IconBuildingCommunity from '@/Components/icons/IconBuildingCommunity';
 import IconPencil from '@/Components/icons/IconPencil';
 import IconPlus from '@/Components/icons/IconPlus';
 import IconRefresh from '@/Components/icons/IconRefresh';
@@ -16,7 +16,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/Components/ui/alert-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
@@ -31,20 +30,24 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 export default function Index(props) {
-  const { data: categories, meta } = props.categories;
+  const { data: publishers, meta } = props.publishers;
   const [params, setParams] = useState(props.state);
 
   const onSortable = (field) => {
     setParams({ ...params, field: field, direction: params.direction === 'asc' ? 'desc' : 'asc' });
   };
 
-  useFilter({ route: route('admin.categories.index'), values: params, only: ['categories'] });
+  useFilter({ route: route('admin.publishers.index'), values: params, only: ['publishers'] });
   return (
     <div className="flex w-full flex-col pb-32">
       <div className="mb-8 flex flex-col items-start justify-between gap-y-4 lg:flex-row lg:items-center">
-        <HeaderTitle title={props.page_settings.title} subtitle={props.page_settings.subtitle} icon={IconCategory} />
+        <HeaderTitle
+          title={props.page_settings.title}
+          subtitle={props.page_settings.subtitle}
+          icon={IconBuildingCommunity}
+        />
         <Button variant="orange" size="lg" asChild>
-          <Link href={route('admin.categories.create')}>
+          <Link href={route('admin.publishers.create')}>
             <IconPlus className={'size-4'} />
           </Link>
         </Button>
@@ -99,14 +102,31 @@ export default function Index(props) {
                 </TableHead>
                 <TableHead>
                   {' '}
-                  <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('slug')}>
-                    Slug
+                  <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('address')}>
+                    Alamat
                     <span className="ml-2 flex-none rounded text-muted-foreground">
                       <IconArrowDownUp className="size-4 text-muted-foreground" />
                     </span>
                   </Button>
                 </TableHead>
-                <TableHead>Cover</TableHead>
+                <TableHead>
+                  {' '}
+                  <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('email')}>
+                    Email
+                    <span className="ml-2 flex-none rounded text-muted-foreground">
+                      <IconArrowDownUp className="size-4 text-muted-foreground" />
+                    </span>
+                  </Button>
+                </TableHead>
+                <TableHead>
+                  {' '}
+                  <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('phone')}>
+                    Nomor Handphone
+                    <span className="ml-2 flex-none rounded text-muted-foreground">
+                      <IconArrowDownUp className="size-4 text-muted-foreground" />
+                    </span>
+                  </Button>
+                </TableHead>
                 <TableHead>
                   {' '}
                   <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('created_at')}>
@@ -120,22 +140,18 @@ export default function Index(props) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categories.map((category, i) => (
+              {publishers.map((publisher, i) => (
                 <TableRow key={i}>
                   <TableCell>{i + 1 + (meta.current_page - 1) * meta.per_page}</TableCell>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell>{category.slug}</TableCell>
-                  <TableCell>
-                    <Avatar>
-                      <AvatarImage src={category.cover} />
-                      <AvatarFallback>{category.name.substring(0, 1)}</AvatarFallback>
-                    </Avatar>
-                  </TableCell>
-                  <TableCell>{category.created_at}</TableCell>
+                  <TableCell>{publisher.name}</TableCell>
+                  <TableCell>{publisher.address}</TableCell>
+                  <TableCell>{publisher.email}</TableCell>
+                  <TableCell>{publisher.phone}</TableCell>
+                  <TableCell>{publisher.created_at}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-x-1">
                       <Button variant="blue" size="sm" asChild>
-                        <Link href={route('admin.categories.edit', [category.id])}>
+                        <Link href={route('admin.publishers.edit', [publisher.id])}>
                           <IconPencil className={'size-4'} />
                         </Link>
                       </Button>
@@ -156,7 +172,7 @@ export default function Index(props) {
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
                               onClick={() =>
-                                router.delete(route('admin.categories.destroy', [category]), {
+                                router.delete(route('admin.publishers.destroy', [publisher]), {
                                   preserveScroll: true,
                                   preserveState: true,
                                   onSuccess: (success) => {
@@ -181,7 +197,7 @@ export default function Index(props) {
         <CardFooter className="flex w-full flex-col items-center justify-between border-t py-2 lg:flex-row">
           <p className="mb-2 text-sm text-muted-foreground">
             Manampilkan <span className="font-medium text-orange-500"> {meta.from ?? 0}</span> dari {meta.total}{' '}
-            kategori
+            Penerbit
           </p>
           <div className="overflow-x-auto">
             {meta.has_pages && (

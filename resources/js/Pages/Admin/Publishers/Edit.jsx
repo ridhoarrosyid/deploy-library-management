@@ -1,6 +1,6 @@
 import HeaderTitle from '@/Components/HeaderTitle';
 import IconArrowLeft from '@/Components/icons/IconArrowLeft';
-import IconCategory from '@/Components/icons/IconCategory';
+import IconBuildingCommunity from '@/Components/icons/IconBuildingCommunity';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent } from '@/Components/ui/card';
@@ -13,19 +13,22 @@ import { Link, useForm } from '@inertiajs/react';
 import { useRef } from 'react';
 import { toast } from 'sonner';
 
-export default function Create(props) {
-  const fileInputCoverRef = useRef(null);
+export default function Edit(props) {
+  console.log(props);
+  const fileInputLogoRef = useRef(null);
   const { data, setData, reset, post, processing, errors } = useForm({
-    name: '',
-    description: '',
-    cover: null,
+    name: props.publisher.name ?? '',
+    address: props.publisher.address ?? '',
+    email: props.publisher.email ?? '',
+    phone: props.publisher.phone ?? '',
+    logo: null,
     _method: props.page_settings.method,
   });
 
   const onHandleChange = (e) => setData(e.target.name, e.target.value);
   const onHandleReset = () => {
     reset();
-    fileInputCoverRef.current.value = null;
+    fileInputLogoRef.current.value = null;
   };
   const onHandleSubmit = (e) => {
     e.preventDefault();
@@ -42,9 +45,13 @@ export default function Create(props) {
   return (
     <div className="flex w-full flex-col pb-32">
       <div className="mb-8 flex flex-col items-start justify-between gap-y-4 lg:flex-row lg:items-center">
-        <HeaderTitle title={props.page_settings.title} subtitle={props.page_settings.subtitle} icon={IconCategory} />
+        <HeaderTitle
+          title={props.page_settings.title}
+          subtitle={props.page_settings.subtitle}
+          icon={IconBuildingCommunity}
+        />
         <Button variant="orange" size="lg" asChild>
-          <Link href={route('admin.categories.index')}>
+          <Link href={route('admin.publishers.index')}>
             <IconArrowLeft className={'size-4'} /> Kembali
           </Link>
         </Button>
@@ -65,26 +72,50 @@ export default function Create(props) {
               {errors.name && <InputError message={errors.name} />}
             </div>
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="description">Deskripsi</Label>
+              <Label htmlFor="address">Alamat</Label>
               <Textarea
-                name="description"
-                id="description"
-                placeholder="Masukkan deskripsi..."
-                value={data.description}
+                name="address"
+                id="address"
+                placeholder="Masukkan alamat..."
+                value={data.address}
                 onChange={onHandleChange}
               ></Textarea>
-              {errors.description && <InputError message={errors.description} />}
+              {errors.address && <InputError message={errors.address} />}
             </div>
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="cover">Cover</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                name="cover"
-                id="cover"
+                name="email"
+                id="email"
+                type="email"
+                placeholder="Masukkan email..."
+                value={data.email}
+                onChange={onHandleChange}
+              />
+              {errors.email && <InputError message={errors.email} />}
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="phone">Nomor Telepon</Label>
+              <Input
+                name="phone"
+                id="phone"
+                type="tel"
+                placeholder="Masukkan nomor telepon..."
+                value={data.phone}
+                onChange={onHandleChange}
+              />
+              {errors.phone && <InputError message={errors.phone} />}
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="logo">Logo</Label>
+              <Input
+                name="logo"
+                id="logo"
                 type="file"
                 onChange={(e) => setData(e.target.name, e.target.files[0])}
-                ref={fileInputCoverRef}
+                ref={fileInputLogoRef}
               />
-              {errors.cover && <InputError message={errors.cover} />}
+              {errors.logo && <InputError message={errors.logo} />}
             </div>
             <div className="flex justify-end gap-x-2">
               <Button type="button" variant="ghost" size="lg" onClick={onHandleReset}>
@@ -101,4 +132,4 @@ export default function Create(props) {
   );
 }
 
-Create.layout = (page) => <AppLayout children={page} title={page.props.page_settings.title} />;
+Edit.layout = (page) => <AppLayout children={page} title={page.props.page_settings.title} />;
