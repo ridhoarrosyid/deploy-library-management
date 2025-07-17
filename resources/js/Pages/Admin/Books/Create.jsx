@@ -138,6 +138,7 @@ export default function Create(props) {
                   ))}
                 </SelectContent>
               </Select>
+              {errors.language && <InputError message={errors.language} />}
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="synopsis">Sinopsis</Label>
@@ -206,6 +207,7 @@ export default function Create(props) {
                   ))}
                 </SelectContent>
               </Select>
+              {errors.category_id && <InputError message={errors.category_id} />}
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="publisher_id">Penerbit</Label>
@@ -224,6 +226,7 @@ export default function Create(props) {
                   ))}
                 </SelectContent>
               </Select>
+              {errors.publisher_id && <InputError message={errors.publisher_id} />}
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="total">Stok</Label>
