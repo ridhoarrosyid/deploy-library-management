@@ -104,7 +104,7 @@ class UserController extends Controller
         try {
             $user->update([
                 'name' => $name = $request->name,
-                'username' => usernameGenerator($name),
+                'username' => $user->name !== $name ? usernameGenerator($name) : $user->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phone' => $request->phone,
