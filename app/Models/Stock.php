@@ -10,7 +10,7 @@ class Stock extends Model
     protected $fillable = [
         'book_id',
         'total',
-        'avaliable',
+        'available',
         'loan',
         'lost',
         'damaged'

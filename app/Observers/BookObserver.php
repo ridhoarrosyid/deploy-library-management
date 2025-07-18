@@ -9,8 +9,8 @@ class BookObserver
     public function created(Book $book)
     {
         $book->stock()->create([
-            'total' => $total = request()->total,
-            'available' => $total
+            'total' => request()->total,
+            'available' => request()->total
         ]);
     }
 }

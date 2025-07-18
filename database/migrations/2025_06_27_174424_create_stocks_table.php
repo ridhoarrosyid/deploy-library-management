@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('book_id')->constrained('books')->cascadeOnDelete();
             $table->unsignedInteger('total')->default(0);
-            $table->unsignedInteger('avaliable')->default(0);
+            $table->unsignedInteger('available')->default(0);
             $table->unsignedInteger('loan')->default(0);
             $table->unsignedInteger('lost')->default(0);
             $table->unsignedInteger('damaged')->default(0);

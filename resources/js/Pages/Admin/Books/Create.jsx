@@ -26,10 +26,10 @@ export default function Create(props) {
     synopsis: '',
     number_of_pages: '',
     cover: null,
-    price: 0,
+    price: '',
     category_id: null,
     publisher_id: null,
-    total: 0,
+    total: '',
     _method: props.page_settings.method,
   });
 

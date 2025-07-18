@@ -77,4 +77,35 @@ class Book extends Model
             $query->orderBy($sorts['field'], $sorts['direction']);
         });
     }
+
+    public function updateStock($columnToIncrement, $columnToDecrement)
+    {
+        if ($this->stock->$columnToDecrement > 0) {
+            return $this->stock()->update([
+                $columnToIncrement => $this->stock->$columnToIncrement + 1,
+                $columnToDecrement => $this->stock->$columnToDecrement - 1
+            ]);
+        }
+        return false;
+    }
+
+    public function stock_loan()
+    {
+        return $this->updateStock('loan', 'available');
+    }
+
+    public function stock_lost()
+    {
+        return $this->updateStock('lost', 'loan');
+    }
+
+    public function stock_damaged()
+    {
+        return $this->updateStock('damaged', 'loan');
+    }
+
+    public function stock_loan_return()
+    {
+        return $this->updateStock('available', 'loan');
+    }
 }

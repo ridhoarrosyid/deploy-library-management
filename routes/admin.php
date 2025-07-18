@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FineSettingController;
+use App\Http\Controllers\Admin\LoanController;
 use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -43,5 +44,14 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
   Route::controller(FineSettingController::class)->group(function () {
     Route::get('/fine-setting/create', 'create')->name('admin.fine-setting.create');
     Route::put('/fine-setting/create', 'store')->name('admin.fine-setting.store');
+  });
+
+  Route::controller(LoanController::class)->group(function () {
+    Route::get('/loans', 'index')->name('admin.loans.index');
+    Route::get('/loans/create', 'create')->name('admin.loans.create');
+    Route::post('/loans/create', 'store')->name('admin.loans.store');
+    Route::get('/loans/edit/{loan}', 'edit')->name('admin.loans.edit');
+    Route::put('/loans/edit/{loan}', 'update')->name('admin.loans.update');
+    Route::delete('/loans/destroy/{loan}', 'destroy')->name('admin.loans.destroy');
   });
 });
