@@ -48,7 +48,6 @@ export default function Edit(props) {
       },
     });
   };
-  console.log(props.page_data.publishers);
 
   return (
     <div className="flex w-full flex-col pb-32">

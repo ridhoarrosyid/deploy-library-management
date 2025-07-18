@@ -14,7 +14,6 @@ import { useRef } from 'react';
 import { toast } from 'sonner';
 
 export default function Edit(props) {
-  console.log(props);
   const fileInputLogoRef = useRef(null);
   const { data, setData, reset, post, processing, errors } = useForm({
     name: props.publisher.name ?? '',

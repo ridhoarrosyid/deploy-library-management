@@ -38,7 +38,6 @@ export default function Create(props) {
       },
     });
   };
-  console.log(props.page_data.books);
 
   return (
     <div className="flex w-full flex-col pb-32">
