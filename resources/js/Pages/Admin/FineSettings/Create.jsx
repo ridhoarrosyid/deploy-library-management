@@ -12,9 +12,9 @@ import { toast } from 'sonner';
 
 export default function Create(props) {
   const { data, setData, reset, post, processing, errors } = useForm({
-    late_fee_per_day: props.fine_setting?.late_fee_per_day ?? 0,
-    damage_fee_percentage: props.fine_setting?.damage_fee_percentage ?? 0,
-    lost_fee_percentage: props.fine_setting?.lost_fee_percentage ?? 0,
+    late_fee_per_day: props.fine_setting?.late_fee_per_day ?? '',
+    damage_fee_percentage: props.fine_setting?.damage_fee_percentage ?? '',
+    lost_fee_percentage: props.fine_setting?.lost_fee_percentage ?? '',
     _method: props.page_settings.method,
   });
 

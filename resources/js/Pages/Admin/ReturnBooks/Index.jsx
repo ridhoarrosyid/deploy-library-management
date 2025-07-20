@@ -1,22 +1,7 @@
 import HeaderTitle from '@/Components/HeaderTitle';
 import IconArrowDownUp from '@/Components/icons/IconArrowDownUp';
-import IconCreditCardPay from '@/Components/icons/IconCreditCardPay';
 import IconCreditCardRefund from '@/Components/icons/IconCreditCardRefund';
-import IconPencil from '@/Components/icons/IconPencil';
-import IconPlus from '@/Components/icons/IconPlus';
 import IconRefresh from '@/Components/icons/IconRefresh';
-import IconTrash from '@/Components/icons/IconTrash';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/Components/ui/alert-dialog';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
@@ -24,34 +9,27 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import AppLayout from '@/Layouts/AppLayout';
-import { flashMessage } from '@/lib/utils';
+import { formatToRupiah } from '@/lib/utils';
 import { useFilter } from '@/Pages/hooks/useFilter';
-import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 export default function Index(props) {
-  const { data: loans, meta } = props.loans;
+  const { data: return_books, meta } = props.return_books;
   const [params, setParams] = useState(props.state);
 
   const onSortable = (field) => {
     setParams({ ...params, field: field, direction: params.direction === 'asc' ? 'desc' : 'asc' });
   };
 
-  useFilter({ route: route('admin.loans.index'), values: params, only: ['loans'] });
+  useFilter({ route: route('admin.return-books.index'), values: params, only: ['return_books'] });
   return (
     <div className="flex w-full flex-col pb-32">
       <div className="mb-8 flex flex-col items-start justify-between gap-y-4 lg:flex-row lg:items-center">
         <HeaderTitle
           title={props.page_settings.title}
           subtitle={props.page_settings.subtitle}
-          icon={IconCreditCardPay}
+          icon={IconCreditCardRefund}
         />
-        <Button variant="orange" size="lg" asChild>
-          <Link href={route('admin.loans.create')}>
-            <IconPlus className={'size-4'} />
-          </Link>
-        </Button>
       </div>
       <Card>
         <CardHeader>
@@ -94,6 +72,15 @@ export default function Index(props) {
                 </TableHead>
                 <TableHead>
                   {' '}
+                  <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('return_book_code')}>
+                    Kode Pengembalian
+                    <span className="ml-2 flex-none rounded text-muted-foreground">
+                      <IconArrowDownUp className="size-4 text-muted-foreground" />
+                    </span>
+                  </Button>
+                </TableHead>
+                <TableHead>
+                  {' '}
                   <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('loan_code')}>
                     Kode Peminjaman
                     <span className="ml-2 flex-none rounded text-muted-foreground">
@@ -119,7 +106,15 @@ export default function Index(props) {
                     </span>
                   </Button>
                 </TableHead>
-
+                <TableHead>
+                  {' '}
+                  <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('status')}>
+                    Status
+                    <span className="ml-2 flex-none rounded text-muted-foreground">
+                      <IconArrowDownUp className="size-4 text-muted-foreground" />
+                    </span>
+                  </Button>
+                </TableHead>
                 <TableHead>
                   {' '}
                   <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('loan_date')}>
@@ -129,7 +124,6 @@ export default function Index(props) {
                     </span>
                   </Button>
                 </TableHead>
-
                 <TableHead>
                   {' '}
                   <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('due_date')}>
@@ -139,7 +133,17 @@ export default function Index(props) {
                     </span>
                   </Button>
                 </TableHead>
-
+                <TableHead>
+                  {' '}
+                  <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('return_date')}>
+                    Tanggal Pengembalian
+                    <span className="ml-2 flex-none rounded text-muted-foreground">
+                      <IconArrowDownUp className="size-4 text-muted-foreground" />
+                    </span>
+                  </Button>
+                </TableHead>
+                <TableHead>Denda</TableHead>
+                <TableHead>Kondisi</TableHead>
                 <TableHead>
                   {' '}
                   <Button className="group inline-flex" variant="ghost" onClick={() => onSortable('created_at')}>
@@ -153,64 +157,22 @@ export default function Index(props) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {loans.map((loan, i) => (
+              {return_books.map((return_book, i) => (
                 <TableRow key={i}>
                   <TableCell>{i + 1 + (meta.current_page - 1) * meta.per_page}</TableCell>
-                  <TableCell>{loan.loan_code}</TableCell>
-                  <TableCell>{loan.user.name}</TableCell>
-                  <TableCell>{loan.book.title}</TableCell>
-                  <TableCell>{loan.loan_date}</TableCell>
-                  <TableCell>{loan.due_date}</TableCell>
+                  <TableCell>{return_book.return_book_code}</TableCell>
+                  <TableCell>{return_book.loan.loan_code}</TableCell>
 
-                  <TableCell>{loan.created_at}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-x-1">
-                      {!loan.has_return_book && (
-                        <Button variant="purple" size="sm" asChild>
-                          <Link href={route('admin.return-books.create', [loan])}>
-                            <IconCreditCardRefund className={'size-4'} />
-                          </Link>
-                        </Button>
-                      )}
-                      <Button variant="blue" size="sm" asChild>
-                        <Link href={route('admin.loans.edit', [loan.id])}>
-                          <IconPencil className={'size-4'} />
-                        </Link>
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="red" size="sm">
-                            <IconTrash className={'size-4'} />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Apakah Anda benar-benar yakin?!</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus data secara permanen.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() =>
-                                router.delete(route('admin.loans.destroy', [loan]), {
-                                  preserveScroll: true,
-                                  preserveState: true,
-                                  onSuccess: (success) => {
-                                    const flash = flashMessage(success);
-                                    if (flash) toast[flash.type](flash.message);
-                                  },
-                                })
-                              }
-                            >
-                              Hapus
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </TableCell>
+                  <TableCell>{return_book.user.name}</TableCell>
+                  <TableCell>{return_book.book.title}</TableCell>
+                  <TableCell>{return_book.status}</TableCell>
+                  <TableCell>{return_book.loan.loan_date}</TableCell>
+                  <TableCell>{return_book.loan.due_date}</TableCell>
+                  <TableCell>{return_book.return_date}</TableCell>
+                  <TableCell className="text-red-500">{formatToRupiah(return_book.fine)}</TableCell>
+                  <TableCell>{return_book.return_book_check}</TableCell>
+                  <TableCell>{return_book.created_at}</TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -219,7 +181,7 @@ export default function Index(props) {
         <CardFooter className="flex w-full flex-col items-center justify-between border-t py-2 lg:flex-row">
           <p className="mb-2 text-sm text-muted-foreground">
             Manampilkan <span className="font-medium text-orange-500"> {meta.from ?? 0}</span> dari {meta.total}{' '}
-            peminjaman
+            pengembalian
           </p>
           <div className="overflow-x-auto">
             {meta.has_pages && (

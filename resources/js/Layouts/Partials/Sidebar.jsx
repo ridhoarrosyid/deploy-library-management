@@ -58,8 +58,8 @@ export default function Sidebar({ url, auth }) {
         icon={IconUsersGroup}
       />
       <NavLink
-        url={route('admin.fine-setting.create')}
-        active={url.startsWith('/admin/fine-setting')}
+        url={route('admin.fine-settings.create')}
+        active={url.startsWith('/admin/fine-settings')}
         title={'Pengaturan Denda'}
         icon={IconSettingsExclamation}
       />
@@ -76,7 +76,12 @@ export default function Sidebar({ url, auth }) {
         title={'Peminjaman'}
         icon={IconCreditCardPay}
       />
-      <NavLink url="#" title={'Pengembalian'} icon={IconCreditCardRefund} />
+      <NavLink
+        url={route('admin.return-books.index')}
+        active={url.startsWith('/admin/return-books')}
+        title={'Pengembalian'}
+        icon={IconCreditCardRefund}
+      />
       <div className="px-3 py-2 text-sm font-semibold text-foreground">Lainnya</div>
       <NavLink url={route('profile.edit')} title={'Profile'} icon={IconUser} />
       <NavLink url={route('logout')} title={'Logout'} icon={IconLogout} method="post" as="button" className="w-full" />

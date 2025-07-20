@@ -61,8 +61,8 @@ export default function SidebarResponsive({ url, auth }) {
           icon={IconUsersGroup}
         />
         <NavLinkResponsive
-          url={route('admin.fine-setting.create')}
-          active={url.startsWith('/admin/fine-setting')}
+          url={route('admin.fine-settings.create')}
+          active={url.startsWith('/admin/fine-settings')}
           title={'Pengaturan Denda'}
           icon={IconSettingsExclamation}
         />
@@ -79,7 +79,12 @@ export default function SidebarResponsive({ url, auth }) {
           title={'Peminjaman'}
           icon={IconCreditCardPay}
         />
-        <NavLinkResponsive url="#" title={'Pengembalian'} icon={IconCreditCardRefund} />
+        <NavLinkResponsive
+          url={route('admin.return-books.index')}
+          active={url.startsWith('/admin/return-books')}
+          title={'Pengembalian'}
+          icon={IconCreditCardRefund}
+        />
         <div className="px-3 py-2 text-sm font-semibold text-foreground">Lainnya</div>
         <NavLinkResponsive url={route('profile.edit')} title={'Profile'} icon={IconUser} />
         <NavLinkResponsive

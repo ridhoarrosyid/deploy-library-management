@@ -13,7 +13,8 @@ class Fine extends Model
         'late_fee',
         'other_fee',
         'total_fee',
-        'payment_status'
+        'payment_status',
+        'fine_date'
     ];
 
     protected function casts(): array

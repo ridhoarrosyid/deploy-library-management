@@ -22,7 +22,7 @@ class FineSettingController extends Controller
                 'title' => 'Pengaturan denda',
                 'subtitle' => 'Konfigurasi pengaturan denda di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.fine-setting.store')
+                'action' => route('admin.fine-settings.store')
             ],
             'fine_setting' => $fine_setting
         ]);
@@ -37,10 +37,10 @@ class FineSettingController extends Controller
                 'lost_fee_percentage' => $request->lost_fee_percentage,
             ]);
             flashMessage('Berhasil melakukan perubahan denda');
-            return to_route('admin.fine-setting.create');
+            return to_route('admin.fine-settings.create');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
-            return to_route('admin.fine-setting.create');
+            return to_route('admin.fine-settings.create');
         }
     }
 }
