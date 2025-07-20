@@ -84,7 +84,7 @@ class ReturnBookController extends Controller
     public function store(Loan $loan, ReturnBookRequest $request): RedirectResponse
     {
         try {
-            // DB::transaction();
+            DB::transaction();
             $return_book = $loan->returnBook()->create([
                 'return_book_code' => str()->lower(str()->random(10)),
                 'book_id' => $loan->book_id,
@@ -108,7 +108,7 @@ class ReturnBookController extends Controller
 
             $fineData = $this->calculateFine($return_book, $return_book_check, FineSetting::first(), $daysLate);
 
-            // DB::commit();
+            DB::commit();
 
             if ($isOnTime) {
                 if ($fineData) {
@@ -127,7 +127,6 @@ class ReturnBookController extends Controller
             flashMessage('Berhasil mengembalikan buku');
             return to_route('admin.return-books.index');
         } catch (Throwable $e) {
-            dd($e->getMessage());
             DB::rollBack();
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
             return to_route('admin.return-books.index');
