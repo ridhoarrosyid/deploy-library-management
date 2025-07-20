@@ -1,6 +1,7 @@
 import HeaderTitle from '@/Components/HeaderTitle';
 import IconArrowDownUp from '@/Components/icons/IconArrowDownUp';
 import IconCreditCardRefund from '@/Components/icons/IconCreditCardRefund';
+import IconEye from '@/Components/icons/IconEye';
 import IconRefresh from '@/Components/icons/IconRefresh';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card';
@@ -11,9 +12,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AppLayout from '@/Layouts/AppLayout';
 import { formatToRupiah } from '@/lib/utils';
 import { useFilter } from '@/Pages/hooks/useFilter';
+import { Link } from '@inertiajs/react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Index(props) {
+  if (props.flash_message) toast.info(props.flash_message.message);
+
   const { data: return_books, meta } = props.return_books;
   const [params, setParams] = useState(props.state);
 
@@ -172,7 +177,15 @@ export default function Index(props) {
                   <TableCell className="text-red-500">{formatToRupiah(return_book.fine)}</TableCell>
                   <TableCell>{return_book.return_book_check}</TableCell>
                   <TableCell>{return_book.created_at}</TableCell>
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-x-1">
+                      <Button variant="blue" asChild size="sm">
+                        <Link href={route('admin.fines.create', [return_book])}>
+                          <IconEye className={'size-4'} />
+                        </Link>
+                      </Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
