@@ -17,7 +17,7 @@ class FineController extends Controller
         $return_book = new ReturnFineSingleResource($returnBook->load(['user', 'book', 'fine', 'loan', 'returnBookCheck']));
 
         if (!$return_book->fine) {
-            flashMessage('Tidak ada denda di peminjaman ini', 'error');
+            flashMessage('Tidak ada denda di peminjaman ini', 'info');
             return to_route('admin.return-books.index');
         }
 

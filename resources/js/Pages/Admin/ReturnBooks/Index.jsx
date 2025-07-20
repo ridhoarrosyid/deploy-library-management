@@ -17,7 +17,12 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 export default function Index(props) {
-  if (props.flash_message) toast.info(props.flash_message.message);
+  const { message, type } = props.flash_message;
+  if (message === 'Tidak ada denda di peminjaman ini' && type === 'info') {
+    toast.info(props.flash_message.message);
+    props.flash_message.message = '';
+    props.flash_message.type = '';
+  }
 
   const { data: return_books, meta } = props.return_books;
   const [params, setParams] = useState(props.state);
