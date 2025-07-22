@@ -10,20 +10,13 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import AppLayout from '@/Layouts/AppLayout';
-import { formatToRupiah } from '@/lib/utils';
+import { flashMessage, formatToRupiah } from '@/lib/utils';
 import { useFilter } from '@/Pages/hooks/useFilter';
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 export default function Index(props) {
-  const { message, type } = props.flash_message;
-  if (message === 'Tidak ada denda di peminjaman ini' && type === 'info') {
-    toast.info(props.flash_message.message);
-    props.flash_message.message = '';
-    props.flash_message.type = '';
-  }
-
   const { data: return_books, meta } = props.return_books;
   const [params, setParams] = useState(props.state);
 
@@ -185,7 +178,13 @@ export default function Index(props) {
                   <TableCell>
                     <div className="flex items-center gap-x-1">
                       <Button variant="blue" asChild size="sm">
-                        <Link href={route('admin.fines.create', [return_book])}>
+                        <Link
+                          href={route('admin.fines.create', [return_book])}
+                          onSuccess={(success) => {
+                            const flash = flashMessage(success);
+                            if (flash.message) toast[flash.type](flash.message);
+                          }}
+                        >
                           <IconEye className={'size-4'} />
                         </Link>
                       </Button>
