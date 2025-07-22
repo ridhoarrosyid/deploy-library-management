@@ -1,3 +1,4 @@
+import IconAlertCircle from '@/Components/icons/IconAlertCircle';
 import IconBooks from '@/Components/icons/IconBooks';
 import IconBuildingCommunity from '@/Components/icons/IconBuildingCommunity';
 import IconCategory from '@/Components/icons/IconCategory';
@@ -83,6 +84,12 @@ export default function Sidebar({ url, auth }) {
         icon={IconCreditCardRefund}
       />
       <div className="px-3 py-2 text-sm font-semibold text-foreground">Lainnya</div>
+      <NavLink
+        url={route('admin.announcements.index')}
+        active={url.startsWith('/admin/announcements')}
+        title={'Pengumuman'}
+        icon={IconAlertCircle}
+      />
       <NavLink url={route('profile.edit')} title={'Profile'} icon={IconUser} />
       <NavLink url={route('logout')} title={'Logout'} icon={IconLogout} method="post" as="button" className="w-full" />
     </nav>

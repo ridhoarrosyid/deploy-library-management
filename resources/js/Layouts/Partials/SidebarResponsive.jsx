@@ -1,5 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavLinkResponsive from '@/Components/NavLinkResponsive';
+import IconAlertCircle from '@/Components/icons/IconAlertCircle';
 import IconBooks from '@/Components/icons/IconBooks';
 import IconBuildingCommunity from '@/Components/icons/IconBuildingCommunity';
 import IconCategory from '@/Components/icons/IconCategory';
@@ -60,6 +61,7 @@ export default function SidebarResponsive({ url, auth }) {
           title={'Pengguna'}
           icon={IconUsersGroup}
         />
+
         <NavLinkResponsive
           url={route('admin.fine-settings.create')}
           active={url.startsWith('/admin/fine-settings')}
@@ -86,6 +88,13 @@ export default function SidebarResponsive({ url, auth }) {
           icon={IconCreditCardRefund}
         />
         <div className="px-3 py-2 text-sm font-semibold text-foreground">Lainnya</div>
+
+        <NavLinkResponsive
+          url={route('admin.announcements.index')}
+          active={url.startsWith('/admin/announcements')}
+          title={'Pengumuman'}
+          icon={IconAlertCircle}
+        />
         <NavLinkResponsive url={route('profile.edit')} title={'Profile'} icon={IconUser} />
         <NavLinkResponsive
           url={route('logout')}
