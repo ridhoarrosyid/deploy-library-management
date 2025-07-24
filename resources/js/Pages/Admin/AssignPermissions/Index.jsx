@@ -86,13 +86,15 @@ export default function Index(props) {
                 <TableRow key={i}>
                   <TableCell>{i + 1 + (meta.current_page - 1) * meta.per_page}</TableCell>
                   <TableCell>{role.name}</TableCell>
-                  {role.permissions.map((permission, index) => (
-                    <span className="w-auto text-wrap" key={index}>
-                      <Badge variant={'outline'} className={'my-0.5 mr-2'}>
-                        {permission}
-                      </Badge>
-                    </span>
-                  ))}
+                  <TableCell>
+                    {role.permissions.map((permission, index) => (
+                      <span className="w-auto text-wrap" key={index}>
+                        <Badge variant={'outline'} className={'my-0.5 mr-2'}>
+                          {permission}
+                        </Badge>
+                      </span>
+                    ))}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-x-1">
                       <Button variant="blue" size="sm" asChild>
