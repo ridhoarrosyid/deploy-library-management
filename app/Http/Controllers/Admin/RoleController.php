@@ -101,7 +101,7 @@ class RoleController extends Controller
         }
     }
 
-    public function destroy(Role $role,): RedirectResponse
+    public function destroy(Role $role): RedirectResponse
     {
         try {
             $role->delete();
