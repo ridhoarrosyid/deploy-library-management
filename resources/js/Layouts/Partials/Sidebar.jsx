@@ -67,17 +67,22 @@ export default function Sidebar({ url, auth }) {
       <div className="px-3 py-2 text-sm font-semibold text-foreground">Peran dan Izin</div>
       <NavLink
         url={route('admin.roles.index')}
-        active={url.startsWith('/admin.roles')}
+        active={url.startsWith('/admin/roles')}
         title={'Peran'}
         icon={IconCircleKey}
       />
       <NavLink
         url={route('admin.permissions.index')}
-        active={url.startsWith('/admin.permissions')}
+        active={url.startsWith('/admin/permissions')}
         title={'Izin'}
         icon={IconVersions}
       />
-      <NavLink url="#" title={'Tetapkan Peran'} icon={IconKeyframe} />
+      <NavLink
+        url={route('admin.assign-permissions.index')}
+        active={url.startsWith('/admin/assign-permissions')}
+        title={'Tetapkan Peran'}
+        icon={IconKeyframe}
+      />
       <NavLink url="#" title={'Tetapkan Izin'} icon={IconLayoutKanban} />
       <NavLink url="#" title={'Akses Rute'} icon={IconRoute} />
       <div className="px-3 py-2 text-sm font-semibold text-foreground">Transaksi</div>
