@@ -13,7 +13,7 @@ import { Link, useForm } from '@inertiajs/react';
 import { SelectContent, SelectValue } from '@radix-ui/react-select';
 import { toast } from 'sonner';
 
-export default function Create(props) {
+export default function Edit(props) {
   const { data, setData, reset, post, processing, errors } = useForm({
     name: props.role.name ?? '',
     guard_name: props.role.guard_name ?? 'web',
@@ -96,4 +96,4 @@ export default function Create(props) {
   );
 }
 
-Create.layout = (page) => <AppLayout children={page} title={page.props.page_settings.title} />;
+Edit.layout = (page) => <AppLayout children={page} title={page.props.page_settings.title} />;
