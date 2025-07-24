@@ -55,7 +55,7 @@ class AssignPermissionController extends Controller
                 'title' => 'Sinkronisasi Izin',
                 'subtitle' => 'Sinkronisasi izin di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.assign-permissions.edit', $role)
+                'action' => route('admin.assign-permissions.update', $role)
             ],
             'role' => $role->load(['permissions']),
             'permissions' => Permission::query()->select(['id', 'name'])->where('guard_name', 'web')->get()->map(fn($item) => [
