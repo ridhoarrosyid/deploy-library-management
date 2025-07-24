@@ -6,11 +6,11 @@ import { Button } from '@/Components/ui/button';
 import { Card, CardContent } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import { Select, SelectItem, SelectTrigger } from '@/Components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import AppLayout from '@/Layouts/AppLayout';
 import { flashMessage } from '@/lib/utils';
 import { Link, useForm } from '@inertiajs/react';
-import { SelectContent, SelectValue } from '@radix-ui/react-select';
+
 import { toast } from 'sonner';
 
 export default function Edit(props) {
@@ -63,9 +63,9 @@ export default function Edit(props) {
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="guard_name">Guard</Label>
-              <Select defaultValue={data.guard_name} onValueChange={(e) => setData('guard_name', e.target.value)}>
-                <SelectTrigger>
-                  <SelectValue className="capitalize">
+              <Select defaultValue={data.guard_name} onValueChange={(e) => setData('guard_name', e)}>
+                <SelectTrigger className="capitalize">
+                  <SelectValue>
                     {['web', 'api'].find((guard) => guard === data.guard_name) ?? 'Pilih Guard'}
                   </SelectValue>
                 </SelectTrigger>
