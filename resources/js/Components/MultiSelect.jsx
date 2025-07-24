@@ -127,13 +127,14 @@ export const MultiSelect = React.forwardRef(
                       >
                         {IconComponent && <IconComponent className="mr-2 h-4 w-4" />}
                         {option?.label}
-                        <XCircle
-                          className="ml-2 h-4 w-4 cursor-pointer"
+                        <button
                           onClick={(event) => {
                             event.stopPropagation();
                             toggleOption(value);
                           }}
-                        />
+                        >
+                          <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
+                        </button>
                       </Badge>
                     );
                   })}
@@ -147,24 +148,26 @@ export const MultiSelect = React.forwardRef(
                       style={{ animationDuration: `${animation}s` }}
                     >
                       {`+ ${selectedValues.length - maxCount} more`}
-                      <XCircle
-                        className="ml-2 h-4 w-4 cursor-pointer"
+                      <button
                         onClick={(event) => {
                           event.stopPropagation();
                           clearExtraOptions();
                         }}
-                      />
+                      >
+                        <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
+                      </button>
                     </Badge>
                   )}
                 </div>
                 <div className="flex items-center justify-between">
-                  <XIcon
-                    className="mx-2 h-4 cursor-pointer text-muted-foreground"
+                  <button
                     onClick={(event) => {
                       event.stopPropagation();
                       handleClear();
                     }}
-                  />
+                  >
+                    <XIcon className="mx-2 h-4 cursor-pointer text-muted-foreground" />
+                  </button>
                   <Separator orientation="vertical" className="flex h-full min-h-6" />
                   <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
                 </div>
