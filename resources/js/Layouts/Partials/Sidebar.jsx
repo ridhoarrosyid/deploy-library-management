@@ -65,7 +65,12 @@ export default function Sidebar({ url, auth }) {
         icon={IconSettingsExclamation}
       />
       <div className="px-3 py-2 text-sm font-semibold text-foreground">Peran dan Izin</div>
-      <NavLink url="#" title={'Peran'} icon={IconCircleKey} />
+      <NavLink
+        url={route('admin.roles.index')}
+        active={url.startsWith('/admin.roles')}
+        title={'Peran'}
+        icon={IconCircleKey}
+      />
       <NavLink url="#" title={'Izin'} icon={IconVersions} />
       <NavLink url="#" title={'Tetapkan Peran'} icon={IconKeyframe} />
       <NavLink url="#" title={'Tetapkan Izin'} icon={IconLayoutKanban} />
