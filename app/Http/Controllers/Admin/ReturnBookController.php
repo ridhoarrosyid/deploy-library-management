@@ -103,13 +103,13 @@ class ReturnBookController extends Controller
                 default => flashMessage('Kondisi buku tidak sesuai', 'error')
             };
 
-            DB::commit();
             $isOnTime = $return_book->isOnTime();
             $daysLate = $return_book->getDaysLate();
 
             $fineData = $this->calculateFine($return_book, $return_book_check, FineSetting::first(), $daysLate);
 
 
+            DB::commit();
             if ($isOnTime) {
                 if ($fineData) {
                     flashMessage($fineData['message'], 'error');
@@ -128,6 +128,7 @@ class ReturnBookController extends Controller
             return to_route('admin.return-books.index');
         } catch (Throwable $e) {
             DB::rollBack();
+            dd($e);
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
             return to_route('admin.return-books.index');
         }
