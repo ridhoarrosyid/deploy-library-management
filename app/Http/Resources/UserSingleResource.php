@@ -19,7 +19,8 @@ class UserSingleResource extends JsonResource
             'id' => $this->id,
             'email' => $this->email,
             'name' => $this->name,
-            'avatar' => $this->avatar ? Storage::url($this->avatar) : null
+            'avatar' => $this->avatar ? Storage::url($this->avatar) : null,
+            'role' => $this->getRoleNames()
         ];
     }
 }
