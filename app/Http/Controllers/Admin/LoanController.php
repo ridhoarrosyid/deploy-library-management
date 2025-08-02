@@ -71,6 +71,7 @@ class LoanController extends Controller
                     ]),
                 'users' => User::query()
                     ->select(['id', 'name'])
+                    ->whereHas('roles', fn($query) => $query->where('name', 'member'))
                     ->get()
                     ->map(fn($item) => [
                         'label' => $item->name,
@@ -141,6 +142,7 @@ class LoanController extends Controller
                     ]),
                 'users' => User::query()
                     ->select(['id', 'name'])
+                    ->whereHas('roles', fn($query) => $query->where('name', 'member'))
                     ->get()
                     ->map(fn($item) => [
                         'label' => $item->name,

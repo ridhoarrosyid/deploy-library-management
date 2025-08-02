@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FineController;
 use App\Http\Controllers\Admin\FineSettingController;
 use App\Http\Controllers\Admin\LoanController;
+use App\Http\Controllers\Admin\LoanStatisticController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Admin\ReturnBookController;
@@ -18,6 +19,13 @@ use App\Models\RouteAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
+
+  Route::controller(LoanStatisticController::class)->group(
+    function () {
+      Route::get('/loan-statistics', 'index')->name('admin.loan-statistics.index');
+    }
+  );
+
   Route::controller(CategoryController::class)->group(function () {
     Route::get('/categories', 'index')->name('admin.categories.index');
     Route::get('/categories/create', 'create')->name('admin.categories.create');
