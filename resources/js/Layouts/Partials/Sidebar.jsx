@@ -152,12 +152,7 @@ export default function Sidebar({ url, auth }) {
         <>
           <NavLink url="#" active={url.startsWith('/books')} title={'Buku'} icon={IconBooks} />
           <NavLink url="#" active={url.startsWith('/categories')} title={'Kategori'} icon={IconCategory} />
-          <NavLink
-            url={route('admin.announcements.index')}
-            active={url.startsWith('/loans')}
-            title={'Peminjaman'}
-            icon={IconCreditCardPay}
-          />
+          <NavLink url="#" active={url.startsWith('/loans')} title={'Peminjaman'} icon={IconCreditCardPay} />
           <NavLink
             url="#"
             active={url.startsWith('/return-books')}
