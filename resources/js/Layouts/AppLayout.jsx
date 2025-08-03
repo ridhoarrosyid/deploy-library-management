@@ -76,7 +76,11 @@ export default function AppLayout({ title, children }) {
               <DropdownMenuContent>
                 <DropdownMenuLabel>Akun Saya</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href={route('profile.edit')} method="get" className="w-full">
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href={route('logout')} method="post" as="button" className="w-full">
                     Log Out
