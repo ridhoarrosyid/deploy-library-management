@@ -159,9 +159,14 @@ export default function SidebarResponsive({ url, auth }) {
               title={'Buku'}
               icon={IconBooks}
             />
-            <NavLinkResponsive url="#" active={url.startsWith('/categories')} title={'Kategori'} icon={IconCategory} />
             <NavLinkResponsive
-              url={route('admin.announcements.index')}
+              url={route('front.categories.index')}
+              active={url.startsWith('/categories')}
+              title={'Kategori'}
+              icon={IconCategory}
+            />
+            <NavLinkResponsive
+              url={route('front.loans.index')}
               active={url.startsWith('/loans')}
               title={'Peminjaman'}
               icon={IconCreditCardPay}
