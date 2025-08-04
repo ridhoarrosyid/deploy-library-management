@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\BookFrontController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -12,9 +14,13 @@ Route::get('/test', function () {
     return Inertia::render('Test');
 });
 
-Route::controller(DashboardController::class)->middleware(['auth', 'verified'])->group(function () {
-
+Route::controller(DashboardController::class)->middleware(['auth', 'verified', 'role:member'])->group(function () {
     Route::get('/dashboard', 'index')->name('dashboard');
+});
+
+Route::controller(BookFrontController::class)->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/books', 'index')->name('front.books.index');
+    Route::get('/books/{book:slug}', 'show')->name('front.books.show');
 });
 
 
