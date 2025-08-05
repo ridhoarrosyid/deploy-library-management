@@ -128,7 +128,6 @@ class ReturnBookController extends Controller
             return to_route('admin.return-books.index');
         } catch (Throwable $e) {
             DB::rollBack();
-            dd($e);
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
             return to_route('admin.return-books.index');
         }
