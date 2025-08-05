@@ -20,7 +20,7 @@ export default function BookCard({ item }) {
         </h3>
       </div>
       <p className="mt-1 line-clamp-2 text-sm leading-relaxed tracking-tighter text-muted-foreground">
-        {item.synopsis}
+        {item.synopsis ? item.synopsis : '--'}
       </p>
     </div>
   );
