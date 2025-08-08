@@ -99,6 +99,6 @@ class ReturnBook extends Model
 
     public function getDaysLate(): int
     {
-        return max(0, Carbon::parse($this->loan->loan_date)->diffInDays(Carbon::parse($this->loan->return_date)));
+        return max(0, Carbon::parse($this->loan->due_date)->diffInDays(Carbon::parse($this->loan->return_date)));
     }
 }
