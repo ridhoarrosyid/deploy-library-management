@@ -42,7 +42,7 @@ export default function Index(props) {
           data={{
             title: 'Dikembalikan',
             icon: IconCreditCardRefund,
-            background: 'text-white bg-gradient-to-right from-green-400 via-green-500 to-green-500',
+            background: 'text-white bg-gradient-to-r from-green-400 via-green-500 to-green-500',
             iconClassName: 'text-white',
           }}
         >
@@ -52,7 +52,7 @@ export default function Index(props) {
           data={{
             title: 'Pengecekan',
             icon: IconChecklish,
-            background: 'text-white bg-gradient-to-right from-blue-400 via-blue-500 to-blue-500',
+            background: 'text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-500',
             iconClassName: 'text-white',
           }}
         >
@@ -62,7 +62,7 @@ export default function Index(props) {
           data={{
             title: 'Denda',
             icon: IconMoneybag,
-            background: 'text-white bg-gradient-to-right from-red-400 via-red-500 to-red-500',
+            background: 'text-white bg-gradient-to-r from-red-400 via-red-500 to-red-500',
             iconClassName: 'text-white',
           }}
         >
