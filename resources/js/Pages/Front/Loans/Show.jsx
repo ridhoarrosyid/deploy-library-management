@@ -4,7 +4,9 @@ import IconCreditCardPay from '@/Components/icons/IconCreditCardPay';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card';
 import AppLayout from '@/Layouts/AppLayout';
-import { Link } from '@inertiajs/react';
+import { flashMessage } from '@/lib/utils';
+import { Link, router } from '@inertiajs/react';
+import { toast } from 'sonner';
 
 export default function Show(props) {
   console.log(props.loan.return_book);
@@ -56,11 +58,27 @@ export default function Show(props) {
           </div>
           <div className="flex pt-6 text-sm font-medium lg:items-center lg:border-none lg:pt-0">
             <div className="flex flex-1 justify-center">
-              <Button variant="link">
+              <Button variant="link" asChild>
                 <Link href={route('front.books.show', [props.loan.book.slug])}>Lihat Buku</Link>
               </Button>
               {!props.loan.return_book && (
-                <Button variant="orange" onClick={() => {}}>
+                <Button
+                  variant="orange"
+                  onClick={() => {
+                    router.post(
+                      route('front.return-books.store', [props.loan.book.slug, props.loan.loan_code]),
+                      {},
+                      {
+                        preserveScroll: true,
+                        preserveState: true,
+                        onSuccess: (success) => {
+                          const flash = flashMessage(success);
+                          if (flash) toast[flash.type](flash.message);
+                        },
+                      },
+                    );
+                  }}
+                >
                   Kembalikan
                 </Button>
               )}

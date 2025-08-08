@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryFrontController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoanFrontController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReturnBookFrontController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +37,11 @@ Route::controller(LoanFrontController::class)->middleware(['auth', 'verified', '
     Route::post('/loans/{book:slug}/create', 'store')->name('front.loans.store');
 });
 
+Route::controller(ReturnBookFrontController::class)->middleware(['auth', 'verified', 'role:member'])->group(function () {
+    Route::get('/return-books', 'index')->name('front.return-books.index');
+    Route::get('/return-books/{return_book:return_book_code}/detail', 'show')->name('front.return-books.show');
+    Route::post('/return-books/{book:slug}/create/{loan:loan_code}', 'store')->name('front.return-books.store');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
