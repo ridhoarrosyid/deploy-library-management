@@ -65,14 +65,14 @@ class ReturnBookFrontController extends Controller
         return to_route('front.return-books.show', [$return_book->return_book_code]);
     }
 
-    public function show(ReturnBook $return_book): Response
+    public function show(ReturnBook $returnBook): Response
     {
         return Inertia::render('Front/ReturnBooks/Show', [
             'page_settings' => [
                 'title' => 'Detail Pengembailan Buku',
                 'subtitle' => 'Dapat melihat detail pengembalian buku yang Anda kembalikan'
             ],
-            'return_book' => new ReturnBookFrontSingleResource($return_book->load(['book', 'user', 'loan', 'fine', 'returnBookCheck']))
+            'return_book' => new ReturnBookFrontSingleResource($returnBook->load(['book', 'user', 'loan', 'fine', 'returnBookCheck']))
         ]);
     }
 }

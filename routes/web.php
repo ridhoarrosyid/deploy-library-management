@@ -39,7 +39,7 @@ Route::controller(LoanFrontController::class)->middleware(['auth', 'verified', '
 
 Route::controller(ReturnBookFrontController::class)->middleware(['auth', 'verified', 'role:member'])->group(function () {
     Route::get('/return-books', 'index')->name('front.return-books.index');
-    Route::get('/return-books/{return_book:return_book_code}/detail', 'show')->name('front.return-books.show');
+    Route::get('/return-books/{returnBook:return_book_code}/detail', 'show')->name('front.return-books.show');
     Route::post('/return-books/{book:slug}/create/{loan:loan_code}', 'store')->name('front.return-books.store');
 });
 
