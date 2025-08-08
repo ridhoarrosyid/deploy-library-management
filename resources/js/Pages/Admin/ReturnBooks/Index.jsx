@@ -177,17 +177,19 @@ export default function Index(props) {
                   <TableCell>{return_book.created_at}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-x-1">
-                      <Button variant="blue" asChild size="sm">
-                        <Link
-                          href={route('admin.fines.create', [return_book])}
-                          onSuccess={(success) => {
-                            const flash = flashMessage(success);
-                            if (flash.message) toast[flash.type](flash.message);
-                          }}
-                        >
-                          <IconEye className={'size-4'} />
-                        </Link>
-                      </Button>
+                      {return_book.fine && (
+                        <Button variant="blue" asChild size="sm">
+                          <Link
+                            href={route('admin.fines.create', [return_book])}
+                            onSuccess={(success) => {
+                              const flash = flashMessage(success);
+                              if (flash.message) toast[flash.type](flash.message);
+                            }}
+                          >
+                            <IconEye className={'size-4'} />
+                          </Link>
+                        </Button>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>
