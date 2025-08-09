@@ -49,7 +49,7 @@ class ReturnBookController extends Controller
                 'search' => request()->search ?? '',
                 'load' => 10
             ],
-
+            'conditions' => ReturnBookCondition::options()
         ]);
     }
 
@@ -125,6 +125,50 @@ class ReturnBookController extends Controller
             }
 
             flashMessage('Berhasil mengembalikan buku');
+            return to_route('admin.return-books.index');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+            return to_route('admin.return-books.index');
+        }
+    }
+
+    public function approve(ReturnBook $returnBook, ReturnBookRequest $request): RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
+
+            $return_book_check = $returnBook->returnBookCheck()->create([
+                'condition' => $request->condition,
+                'notes' => $request->notes
+            ]);
+
+            match ($return_book_check->condition->value) {
+                ReturnBookCondition::GOOD->value => $returnBook->book->stock_loan_return(),
+                ReturnBookCondition::LOST->value => $returnBook->book->stock_lost(),
+                ReturnBookCondition::DAMAGED->value => $returnBook->book->stock_damaged(),
+                default => flashMessage('Kondisi buku tidak sesuai', 'error')
+            };
+
+            $isOnTime = $returnBook->isOnTime();
+            $daysLate = $returnBook->getDaysLate();
+            $fineData = $this->calculateFine($returnBook, $return_book_check, FineSetting::first(), $daysLate);
+
+            DB::commit();
+
+            if ($isOnTime) {
+                if ($fineData) {
+                    flashMessage($fineData['message'], 'error');
+                    return to_route('admin.return-books.index');
+                }
+                flashMessage('Berhasil menyetujui pengembalian buku');
+                return to_route('admin.return-books.index');
+            } else {
+                if ($fineData) {
+                    flashMessage($fineData['message'], 'error');
+                    return to_route('admin.return-books.index');
+                }
+            }
             return to_route('admin.return-books.index');
         } catch (Throwable $e) {
             DB::rollBack();
