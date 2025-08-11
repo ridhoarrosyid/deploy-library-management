@@ -8,11 +8,43 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/Components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import AppLayout from '@/Layouts/AppLayout';
 import { FINEPAYMENTSTATUS, formatToRupiah } from '@/lib/utils';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 export default function Show(props) {
   const { SUCCESS } = FINEPAYMENTSTATUS;
-  console.log(props.return_book);
+
+  const handlePayment = async () => {
+    try {
+      const respons = await axios.post(route('payments.create'), {
+        order_id: props.return_book.return_book_code,
+        gross_amount: props.return_book.fine.total_fee,
+        first_name: props.return_book.user.name,
+        last_name: '',
+        email: props.return_book.user.email,
+      });
+
+      const snapToken = respons.data.snapToken;
+      window.snap.pay(snapToken, {
+        onSuccess: (result) => {
+          toast.success('Pembayaran sukses');
+          router.get(route('payments.success'));
+        },
+        onPending: (result) => {
+          toast.warning('Pembayaran tertunda');
+        },
+        onError: (result) => {
+          toast.error('Kesalahan pembayaran');
+        },
+        onClose: (result) => {
+          toast.info('Pembayaran ditutup');
+        },
+      });
+    } catch (error) {
+      toast.error(`Kesalahan pembayaran ${error}`);
+    }
+  };
   return (
     <div className="flex w-full flex-col space-y-4 pb-32">
       <div className="flex flex-col items-start justify-between gap-y-4 lg:flex-row lg:items-center">
@@ -100,13 +132,13 @@ export default function Show(props) {
                   <div className="flex flex-col">
                     <dt className="font-semibold">Tanggal Peminjaman</dt>
                     <dd>
-                      <time datetime={props.return_book.loan.loan_date}>{props.return_book.loan.loan_date}</time>
+                      <time dateTime={props.return_book.loan.loan_date}>{props.return_book.loan.loan_date}</time>
                     </dd>
                   </div>
                   <div className="flex flex-col">
                     <dt className="font-semibold">Batas Pengembalian</dt>
                     <dd>
-                      <time datetime={props.return_book.loan.due_date}>{props.return_book.loan.due_date}</time>
+                      <time dateTime={props.return_book.loan.due_date}>{props.return_book.loan.due_date}</time>
                     </dd>
                   </div>
                   <div className="flex flex-col">
@@ -145,7 +177,7 @@ export default function Show(props) {
                     </TableCell>
                     {props.return_book.fine.payment_status !== SUCCESS && (
                       <TableCell>
-                        <Button variant="outline" onClick={() => {}}>
+                        <Button variant="outline" onClick={handlePayment}>
                           Bayar
                         </Button>
                       </TableCell>
