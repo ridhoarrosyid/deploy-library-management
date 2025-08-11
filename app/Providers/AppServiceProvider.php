@@ -26,8 +26,8 @@ class AppServiceProvider extends ServiceProvider
         Vite::prefetch(concurrency: 3);
         JsonResource::withoutWrapping();
 
-        // if (App::environment(['local', 'testing'])) {
-        //     URL::forceScheme('https');
-        // }
+        if (App::environment(['local', 'testing'])) {
+            URL::forceScheme('https');
+        }
     }
 }
