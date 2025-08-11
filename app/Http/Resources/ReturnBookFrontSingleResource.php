@@ -18,7 +18,7 @@ class ReturnBookFrontSingleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'retrun_book_code' => $this->return_book_code,
+            'return_book_code' => $this->return_book_code,
             'status' => $this->status,
             'return_date' => $this->return_date ? Carbon::parse($this->return_date)->format('d M Y') : null,
             'created_at' => Carbon::parse($this->created_at)->format('d M Y'),
