@@ -1,4 +1,5 @@
 import CardStat from '@/Components/CardStat';
+import ChartCustom from '@/Components/ChartCustom';
 import HeaderTitle from '@/Components/HeaderTitle';
 import IconArrowUpRight from '@/Components/icons/IconArrowUpRight';
 import IconBooks from '@/Components/icons/IconBooks';
@@ -98,6 +99,8 @@ export default function Dashboard(props) {
           </CardStat>
         </div>
       )}
+
+      <ChartCustom chartData={props.page_data.transactionChart} />
 
       <div className="flex w-full flex-col justify-between gap-2 lg:flex-row">
         <Card className="w-full lg:w-1/2">

@@ -19,7 +19,6 @@ const chartConfig = {
 
 export default function ChartCustom({ chartData }) {
   const [activeChart, setActiveChart] = useState('loan');
-
   const total = useMemo(
     () => ({
       loan: chartData.reduce((acc, curr) => acc + curr.loan, 0),
@@ -47,7 +46,7 @@ export default function ChartCustom({ chartData }) {
                 }}
               >
                 <span className="text-xs text-muted-foreground">{chartConfig[key].label}</span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">{total[key].toLocalString()}</span>
+                <span className="text-lg font-bold leading-none sm:text-3xl">{total[key].toLocaleString()}</span>
               </button>
             );
           })}
@@ -55,7 +54,7 @@ export default function ChartCustom({ chartData }) {
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
         <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
-          <BarChart accessibilityLayer={chartData} margin={{ left: 12, right: 12 }}>
+          <BarChart accessibilityLayer data={chartData} margin={{ left: 12, right: 12 }}>
             <CartesianGrid vertical={false} />
             <XAxis
               defaultProps="0"
