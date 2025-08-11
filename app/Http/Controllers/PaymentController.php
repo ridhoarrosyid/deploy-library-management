@@ -40,8 +40,6 @@ class PaymentController extends Controller
                 'snapToken' => $snapToken
             ], 200);
         } catch (Exception $e) {
-            dd($e);
-
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
