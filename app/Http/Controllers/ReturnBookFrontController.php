@@ -10,11 +10,20 @@ use App\Models\ReturnBook;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ReturnBookFrontController extends Controller
+class ReturnBookFrontController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('password.confirm', except: ['store'])
+        ];
+    }
+
     public function index(): Response
     {
         $returnBooks = ReturnBook::query()
