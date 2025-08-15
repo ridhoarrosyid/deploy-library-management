@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\RouteAccess;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
@@ -27,7 +26,7 @@ class RouteAccessSeeder extends Seeder
             RouteAccess::create([
                 'route_name' => $route->getName(),
                 'role_id' => $admin_role->id,
-                'permission_id' => null
+                'permission_id' => null,
             ]);
         }
 
@@ -40,7 +39,7 @@ class RouteAccessSeeder extends Seeder
             'admin.loans.',
             'admin.return-books.',
             'admin.announcements.',
-            'profile.'
+            'profile.',
         ];
 
         $operator_routes = collect(Route::getRoutes())->filter(function ($route) use ($operator_prefixes) {
@@ -53,7 +52,7 @@ class RouteAccessSeeder extends Seeder
             RouteAccess::create([
                 'route_name' => $route->getName(),
                 'role_id' => $operator_role->id,
-                'permission_id' => null
+                'permission_id' => null,
             ]);
         }
 
@@ -65,7 +64,7 @@ class RouteAccessSeeder extends Seeder
             RouteAccess::create([
                 'route_name' => $route->getName(),
                 'role_id' => $member_role->id,
-                'permission_id' => null
+                'permission_id' => null,
             ]);
         }
     }

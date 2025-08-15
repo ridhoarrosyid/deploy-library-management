@@ -15,7 +15,7 @@ class Category extends Model
         'name',
         'slug',
         'description',
-        'cover'
+        'cover',
     ];
 
     public function books(): HasMany

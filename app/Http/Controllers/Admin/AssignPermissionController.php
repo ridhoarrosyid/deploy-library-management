@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AssignPermissionRequest;
 use App\Http\Resources\Admin\AssignPermissionResource;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -33,18 +32,18 @@ class AssignPermissionController extends Controller
         return Inertia::render('Admin/AssignPermissions/Index', [
             'page_settings' => [
                 'title' => 'Tetapkan Izin',
-                'subtitle' => 'Menampilkan seluruh data tetapkan izin yang ada di platform'
+                'subtitle' => 'Menampilkan seluruh data tetapkan izin yang ada di platform',
             ],
             'roles' => AssignPermissionResource::collection($roles)->additional([
                 'meta' => [
-                    'has_pages' => $roles->hasPages()
-                ]
+                    'has_pages' => $roles->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
         ]);
     }
 
@@ -55,13 +54,13 @@ class AssignPermissionController extends Controller
                 'title' => 'Sinkronisasi Izin',
                 'subtitle' => 'Sinkronisasi izin di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.assign-permissions.update', $role)
+                'action' => route('admin.assign-permissions.update', $role),
             ],
             'role' => $role->load(['permissions']),
-            'permissions' => Permission::query()->select(['id', 'name'])->where('guard_name', 'web')->get()->map(fn($item) => [
+            'permissions' => Permission::query()->select(['id', 'name'])->where('guard_name', 'web')->get()->map(fn ($item) => [
                 'label' => $item->name,
-                'value' => $item->id
-            ])
+                'value' => $item->id,
+            ]),
         ]);
     }
 
@@ -74,6 +73,7 @@ class AssignPermissionController extends Controller
             return to_route('admin.assign-permissions.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.assign-permissions.index');
         }
     }

@@ -23,7 +23,7 @@ class ReturnBookResource extends JsonResource
             'created_at' => $this->created_at->format('d M Y'),
             'book' => $this->whenLoaded('book', [
                 'id' => $this->book?->id,
-                'title' => $this->book?->title
+                'title' => $this->book?->title,
             ]),
             'loan' => $this->whenLoaded('loan', [
                 'id' => $this->loan?->id,
@@ -33,10 +33,10 @@ class ReturnBookResource extends JsonResource
             ]),
             'user' => $this->whenLoaded('user', [
                 'id' => $this->user?->id,
-                'name' => $this->user?->name
+                'name' => $this->user?->name,
             ]),
             'fine' => $this->whenLoaded('fine', $this->fine?->total_fee),
-            'return_book_check' => $this->whenLoaded('returnBookCheck', $this->returnBookCheck?->condition)
+            'return_book_check' => $this->whenLoaded('returnBookCheck', $this->returnBookCheck?->condition),
         ];
     }
 }

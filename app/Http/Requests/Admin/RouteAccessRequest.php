@@ -32,8 +32,8 @@ class RouteAccessRequest extends FormRequest
     {
         return [
             'route_name' => 'Rute',
-            'role' => "Peran",
-            'permission' => 'Izin'
+            'role' => 'Peran',
+            'permission' => 'Izin',
         ];
     }
 }

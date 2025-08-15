@@ -24,7 +24,7 @@ class RoleRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3', 'max:255', Rule::unique('roles')->ignore($this->role)],
-            'guard_name' => ['nullable', 'in:web,api']
+            'guard_name' => ['nullable', 'in:web,api'],
         ];
     }
 
@@ -32,7 +32,7 @@ class RoleRequest extends FormRequest
     {
         return [
             'name' => 'Nama',
-            'guard' => 'Guard'
+            'guard' => 'Guard',
         ];
     }
 }

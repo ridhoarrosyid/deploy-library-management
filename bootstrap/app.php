@@ -21,22 +21,23 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ])->alias(aliases: [
             'role' => RoleMiddleware::class,
-            'dynamic.role_permission' => DynamicRoleAndPermissionMiddleware::class
+            'dynamic.role_permission' => DynamicRoleAndPermissionMiddleware::class,
         ]);
 
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response, Throwable $exceptions, Request $request) {
-            if (!app()->environment(['local', 'testing']) && in_array($response->getStatusCode(), [500, 503, 404, 403])) {
+            if (! app()->environment(['local', 'testing']) && in_array($response->getStatusCode(), [500, 503, 404, 403])) {
                 return Inertia::render('ErrorHandling', [
-                    'status' => $response->getStatusCode()
+                    'status' => $response->getStatusCode(),
                 ])->toResponse($request)->setStatusCode($response->getStatusCode());
             } elseif ($response->getStatusCode() === 419) {
                 return back()->with([
-                    'message' => 'The page is expired, please try again'
+                    'message' => 'The page is expired, please try again',
                 ]);
             }
+
             return $response;
         });
     })->create();

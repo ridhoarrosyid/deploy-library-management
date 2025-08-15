@@ -28,8 +28,8 @@ class LoanResource extends JsonResource
             'book' => $this->whenLoaded('book', [
                 'id' => $this->book?->id,
                 'title' => $this->book?->title,
-                'slug' => $this->book?->slug
-            ])
+                'slug' => $this->book?->slug,
+            ]),
         ];
     }
 }

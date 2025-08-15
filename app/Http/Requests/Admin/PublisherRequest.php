@@ -26,7 +26,7 @@ class PublisherRequest extends FormRequest
             'address' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255', 'email'],
             'phone' => ['nullable', 'string', 'max:16'],
-            'logo' => ['nullable', 'mimes:png,jpg,jpeg,webp', 'max:2048']
+            'logo' => ['nullable', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
         ];
     }
 
@@ -37,7 +37,7 @@ class PublisherRequest extends FormRequest
             'address' => 'Alamat',
             'email' => 'Email',
             'phone' => 'Nomor Telepon',
-            'logo' => 'Logo'
+            'logo' => 'Logo',
         ];
     }
 }

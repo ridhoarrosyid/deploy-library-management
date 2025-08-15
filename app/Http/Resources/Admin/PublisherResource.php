@@ -21,7 +21,7 @@ class PublisherResource extends JsonResource
             'address' => $this->address,
             'email' => $this->email,
             'phone' => $this->phone,
-            'created_at' => $this->created_at->format('d Y M')
+            'created_at' => $this->created_at->format('d Y M'),
         ];
     }
 }

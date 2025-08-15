@@ -15,13 +15,32 @@ class Loan extends Model
         'user_id',
         'book_id',
         'loan_date',
-        'due_date'
+        'due_date',
     ];
 
     protected $casts = [
         'loan_date' => 'date',
-        'due_date' => 'date'
+        'due_date' => 'date',
     ];
+
+    public static function checkLoanBook(int $user_id, int $book_id): bool
+    {
+        return self::query()
+            ->where('book_id', $book_id)
+            ->where('user_id', $user_id)
+            ->whereDoesntHave('returnBook', fn ($query) => $query->where('book_id', $book_id)->where('user_id', $user_id))
+            ->exists();
+    }
+
+    public static function totalLoanBooks(): array
+    {
+        return [
+            'days' => self::whereDate('created_at', Carbon::now()->toDateString())->count(),
+            'weeks' => self::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count(),
+            'months' => self::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count(),
+            'years' => self::whereYear('created_at', Carbon::now()->year)->count(),
+        ];
+    }
 
     public function user(): BelongsTo
     {
@@ -52,24 +71,5 @@ class Loan extends Model
         $query->when($sorts['field'] ?? null && $sorts['direction'] ?? null, function ($query) use ($sorts) {
             $query->orderBy($sorts['filed'], $sorts['direction']);
         });
-    }
-
-    public static function checkLoanBook(int $user_id, int $book_id): bool
-    {
-        return self::query()
-            ->where('book_id', $book_id)
-            ->where('user_id', $user_id)
-            ->whereDoesntHave('returnBook', fn($query) => $query->where('book_id', $book_id)->where('user_id', $user_id))
-            ->exists();
-    }
-
-    public static function totalLoanBooks(): array
-    {
-        return [
-            'days' => self::whereDate('created_at', Carbon::now()->toDateString())->count(),
-            'weeks' => self::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count(),
-            'months' => self::whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->count(),
-            'years' => self::whereYear('created_at', Carbon::now()->year)->count()
-        ];
     }
 }

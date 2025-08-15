@@ -6,7 +6,6 @@ use App\Http\Resources\BookFrontResource;
 use App\Http\Resources\CategoryFrontResource;
 use App\Models\Book;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,16 +17,17 @@ class CategoryFrontController extends Controller
             ->select(['id', 'name', 'slug', 'cover'])
             ->latest('created_at')
             ->paginate(8);
+
         return Inertia::render('Front/Categories/Index', [
             'page_settings' => [
                 'title' => 'Kategori',
-                'subtitle' => 'Menampilkan semua kategori yang tersedia pada platform ini'
+                'subtitle' => 'Menampilkan semua kategori yang tersedia pada platform ini',
             ],
             'categories' => CategoryFrontResource::collection($categories)->additional([
                 'meta' => [
-                    'has_pages' => $categories->hasPages()
-                ]
-            ])
+                    'has_pages' => $categories->hasPages(),
+                ],
+            ]),
         ]);
     }
 
@@ -41,13 +41,13 @@ class CategoryFrontController extends Controller
         return Inertia::render('Front/Categories/Show', [
             'page_settings' => [
                 'title' => $category->name,
-                'subtitle' => "Menampilkan semua buku yang tersedia pada kategori {$category->name} pada platform ini"
+                'subtitle' => "Menampilkan semua buku yang tersedia pada kategori {$category->name} pada platform ini",
             ],
             'books' => BookFrontResource::collection($books)->additional([
                 'meta' => [
-                    'has_pages' => $books->hasPages()
-                ]
-            ])
+                    'has_pages' => $books->hasPages(),
+                ],
+            ]),
         ]);
     }
 }

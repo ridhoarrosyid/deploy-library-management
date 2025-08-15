@@ -10,7 +10,7 @@ class BookObserver
     {
         $book->stock()->create([
             'total' => request()->total,
-            'available' => request()->total
+            'available' => request()->total,
         ]);
     }
 }

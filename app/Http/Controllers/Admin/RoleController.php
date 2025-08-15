@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleRequest;
 use App\Http\Resources\Admin\RoleResource;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
@@ -31,18 +30,18 @@ class RoleController extends Controller
         return Inertia::render('Admin/Roles/Index', [
             'page_settings' => [
                 'title' => 'Peran',
-                'subtitle' => 'Menampilkan seluruh data role yang ada di platform'
+                'subtitle' => 'Menampilkan seluruh data role yang ada di platform',
             ],
             'roles' => RoleResource::collection($roles)->additional([
                 'meta' => [
-                    'has_pages' => $roles->hasPages()
-                ]
+                    'has_pages' => $roles->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
         ]);
     }
 
@@ -53,8 +52,8 @@ class RoleController extends Controller
                 'title' => 'Tambah Peran',
                 'subtitle' => 'Tambah peran di sini, klik simpan setelah selesai',
                 'method' => 'POST',
-                'action' => route('admin.roles.store')
-            ]
+                'action' => route('admin.roles.store'),
+            ],
         ]);
     }
 
@@ -63,12 +62,14 @@ class RoleController extends Controller
         try {
             Role::create([
                 'name' => $request->name,
-                'guard_name' => $request->guard_name
+                'guard_name' => $request->guard_name,
             ]);
             flashMessage(MessageType::CREATED->message('Peran'));
+
             return to_route('admin.roles.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.roles.index');
         }
     }
@@ -80,9 +81,9 @@ class RoleController extends Controller
                 'title' => 'Edit Peran',
                 'subtitle' => 'Edit peran di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.roles.update', $role)
+                'action' => route('admin.roles.update', $role),
             ],
-            'role' => $role
+            'role' => $role,
         ]);
     }
 
@@ -91,12 +92,14 @@ class RoleController extends Controller
         try {
             $role->update([
                 'name' => $request->name,
-                'guard_name' => $request->guard_name
+                'guard_name' => $request->guard_name,
             ]);
             flashMessage(MessageType::UPDATED->message('Peran'));
+
             return to_route('admin.roles.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.roles.index');
         }
     }
@@ -106,9 +109,11 @@ class RoleController extends Controller
         try {
             $role->delete();
             flashMessage(MessageType::DELETED->message('Peran'));
+
             return to_route('admin.roles.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.roles.index');
         }
     }

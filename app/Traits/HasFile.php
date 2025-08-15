@@ -24,6 +24,7 @@ trait HasFile
         } else {
             $thumbnail = $model->$column;
         }
+
         return $thumbnail;
     }
 

@@ -29,7 +29,7 @@ class FineFrontResource extends JsonResource
             ]),
             'return_book' => $this->whenLoaded('returnBook', [
                 'return_book_code' => $this->returnBook?->return_book_code,
-                'return_date' => Carbon::parse($this->returnBook?->return_date)->format('d M Y')
+                'return_date' => Carbon::parse($this->returnBook?->return_date)->format('d M Y'),
             ]),
             'book' => $this->whenLoaded('returnBook', [
                 'id' => $this->returnBook?->book?->id,
@@ -39,7 +39,7 @@ class FineFrontResource extends JsonResource
             'user' => $this->whenLoaded('user', [
                 'id' => $this->user?->id,
                 'name' => $this->user?->name,
-            ])
+            ]),
         ];
     }
 }

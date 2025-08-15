@@ -28,14 +28,14 @@ class LoanFrontSingleResource extends JsonResource
                 'title' => $this->book?->title,
                 'slug' => $this->book?->slug,
                 'cover' => $this->book?->cover ? Storage::url($this->book?->cover) : null,
-                'synopsis' => $this->synopsis
+                'synopsis' => $this->synopsis,
             ]),
             'return_book' => $this->whenLoaded('returnBook', [
-                'status' => $this->returnBook?->status
+                'status' => $this->returnBook?->status,
             ]),
             'user' => $this->whenLoaded('user', [
                 'id' => $this->user?->id,
-                'name' => $this->user?->name
+                'name' => $this->user?->name,
             ]),
         ];
     }

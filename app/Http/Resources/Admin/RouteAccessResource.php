@@ -20,11 +20,11 @@ class RouteAccessResource extends JsonResource
             'created_at' => $this->created_at->format('d M Y'),
             'role' => $this->whenLoaded('role', [
                 'id' => $this->role?->id,
-                'name' => $this->role?->name
+                'name' => $this->role?->name,
             ]),
             'permission' => $this->whenLoaded('permission', [
                 'id' => $this->permission?->id,
-                'name' => $this->permission?->name
+                'name' => $this->permission?->name,
             ]),
         ];
     }

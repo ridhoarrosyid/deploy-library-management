@@ -18,18 +18,18 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => $name = 'Joni',
                 'username' => usernameGenerator($name),
-                'email' => 'joni@gmail.com'
+                'email' => 'joni@gmail.com',
             ]
         )->assignRole(Role::create(['name' => 'admin']));
         User::factory()->create([
-            'name' => $name = "ridho",
+            'name' => $name = 'ridho',
             'username' => usernameGenerator($name),
-            'email' => 'ridho@gmail.com'
+            'email' => 'ridho@gmail.com',
         ])->assignRole(Role::create(['name' => 'operator']));
         User::factory()->create([
             'name' => $name = 'deka',
             'username' => usernameGenerator($name),
-            'email' => 'deka@gmail.com'
+            'email' => 'deka@gmail.com',
         ])->assignRole(Role::create(['name' => 'member']));
         $this->call(PublisherSeeder::class);
         $this->call(CategorySeeder::class);

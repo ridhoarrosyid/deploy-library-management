@@ -26,8 +26,8 @@ class RouteAccess extends Model
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('route_name', 'REGEXP', $search)
-                ->orWhereHas('role', fn($query) => $query->where('name', 'REGEXP', $search))
-                ->orWhereHas('permission', fn($query) => $query->where('name', 'REGEXP', $search));
+                ->orWhereHas('role', fn ($query) => $query->where('name', 'REGEXP', $search))
+                ->orWhereHas('permission', fn ($query) => $query->where('name', 'REGEXP', $search));
         });
     }
 
@@ -35,8 +35,8 @@ class RouteAccess extends Model
     {
         $query->when(($sorts['field'] ?? null) && ($sorts['direction'] ?? null), function ($query) use ($sorts) {
             match ($sorts['field']) {
-                'role_id' => $query->whereHas('role', fn($query) => $query->orderBy('name', $sorts['direction'])),
-                'permission_id' => $query->whereHas('permission', fn($query) => $query->orderBy('name', $sorts['direction'])),
+                'role_id' => $query->whereHas('role', fn ($query) => $query->orderBy('name', $sorts['direction'])),
+                'permission_id' => $query->whereHas('permission', fn ($query) => $query->orderBy('name', $sorts['direction'])),
                 default => $query->orderBy($sorts['field'], $sorts['direction'])
             };
         });

@@ -18,7 +18,7 @@ class LoanStatisticResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'author' => $this->author,
-            'loans_count' => $this->loans_count
+            'loans_count' => $this->loans_count,
         ];
     }
 }

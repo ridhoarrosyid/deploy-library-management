@@ -24,20 +24,20 @@ class ReturnBookFrontResource extends JsonResource
             'book' => $this->whenLoaded('book', [
                 'id' => $this->book?->id,
                 'title' => $this->book?->title,
-                'slug' => $this->book?->slug
+                'slug' => $this->book?->slug,
             ]),
             'loan' => $this->whenLoaded('loan', [
                 'id' => $this->loan?->id,
                 'loan_code' => $this->loan?->loan_code,
                 'loan_date' => Carbon::parse($this->loan?->loan_date)->format('d M Y'),
-                'due_date' => Carbon::parse($this->loan?->due_date)->format('d M Y')
+                'due_date' => Carbon::parse($this->loan?->due_date)->format('d M Y'),
             ]),
             'user' => $this->whenLoaded('user', [
                 'id' => $this->loan?->id,
                 'loan_code' => $this->user?->name,
             ]),
             'fine' => $this->whenLoaded('fine', $this->fine?->total_fee),
-            'return_book_check' => $this->whenLoaded('returnBookCheck', $this->returnBookCheck?->condition)
+            'return_book_check' => $this->whenLoaded('returnBookCheck', $this->returnBookCheck?->condition),
         ];
     }
 }

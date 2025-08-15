@@ -17,7 +17,7 @@ class Publisher extends Model
         'address',
         'email',
         'phone',
-        'logo'
+        'logo',
     ];
 
     public function books(): HasMany

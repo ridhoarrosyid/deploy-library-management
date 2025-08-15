@@ -20,15 +20,16 @@ class FineFrontController extends Controller
             ->where('user_id', auth()->user()->id)
             ->paginate(10)
             ->withQueryString();
+
         return Inertia::render('Front/Fines/Index', [
             'page_settings' => [
                 'title' => 'Laporan Denda',
-                'subtitle' => 'Menampilkan laporan denda Anda yang ada di platform ini.'
+                'subtitle' => 'Menampilkan laporan denda Anda yang ada di platform ini.',
             ],
             'fines' => FineFrontResource::collection($fines)->additional([
                 'meta' => [
-                    'has_pages' => $fines->hasPages()
-                ]
+                    'has_pages' => $fines->hasPages(),
+                ],
             ]),
         ]);
     }

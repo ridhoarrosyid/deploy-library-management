@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Admin;
 
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +20,7 @@ class CategoryResourse extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'cover' => $this->cover ? Storage::url($this->cover) : null,
-            'created_at' => $this->created_at->format('d M Y')
+            'created_at' => $this->created_at->format('d M Y'),
         ];
     }
 }

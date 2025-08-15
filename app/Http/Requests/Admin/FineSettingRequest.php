@@ -24,7 +24,7 @@ class FineSettingRequest extends FormRequest
         return [
             'late_fee_per_day' => ['required', 'numeric'],
             'damage_fee_percentage' => ['required', 'numeric'],
-            'lost_fee_percentage' => ['required', 'numeric']
+            'lost_fee_percentage' => ['required', 'numeric'],
         ];
     }
 
@@ -33,7 +33,7 @@ class FineSettingRequest extends FormRequest
         return [
             'late_fee_per_day' => 'Denda keterlambatan',
             'damage_fee_percentage' => 'Denda rusak',
-            'lost_fee_percentage' => 'Denda hilang'
+            'lost_fee_percentage' => 'Denda hilang',
         ];
     }
 }

@@ -24,8 +24,8 @@ class StockResource extends JsonResource
             'created_at' => $this->created_at->format('d M Y'),
             'book' => [
                 'id' => $this->book?->id,
-                'title' => $this->book?->title
-            ]
+                'title' => $this->book?->title,
+            ],
         ];
     }
 }

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use PharIo\Version\BuildMetaData;
 
 class ReturnBook extends Model
 {
@@ -18,16 +17,8 @@ class ReturnBook extends Model
         'user_id',
         'book_id',
         'return_date',
-        'status'
+        'status',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'return_date' => 'date',
-            'status' => ReturnBookStatus::class
-        ];
-    }
 
     public function loan(): BelongsTo
     {
@@ -59,9 +50,9 @@ class ReturnBook extends Model
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->whereAny(['return_book_code', 'status'], 'REGEXP', $search);
-            })->orWhereHas('loan', fn($query) => $query->where('loan_code', 'REGEXP', $search))
-                ->orWhereHas('user', fn($query) => $query->where('name', 'REGEXP', $search))
-                ->orWhereHas('book', fn($query) => $query->where('title', 'REGEXP', $search));
+            })->orWhereHas('loan', fn ($query) => $query->where('loan_code', 'REGEXP', $search))
+                ->orWhereHas('user', fn ($query) => $query->where('name', 'REGEXP', $search))
+                ->orWhereHas('book', fn ($query) => $query->where('title', 'REGEXP', $search));
         });
     }
 
@@ -69,7 +60,7 @@ class ReturnBook extends Model
     {
         $query->when($sorts['direction'] ?? null && $sorts['field'] ?? null, function ($query) use ($sorts) {
             match ($sorts['field']) {
-                'loan_code' => $query->whereHas('loan', fn($query) => $query->orderBy('loan_code', $sorts['direction'])),
+                'loan_code' => $query->whereHas('loan', fn ($query) => $query->orderBy('loan_code', $sorts['direction'])),
                 default => $query->orderBy($sorts['field'], $sorts['direction'])
             };
         });
@@ -79,14 +70,17 @@ class ReturnBook extends Model
     {
         return $query->where('status', ReturnBookStatus::RETURNED->value);
     }
+
     public function scopeFine(Builder $query): Builder
     {
         return $query->where('status', ReturnBookStatus::FINE->value);
     }
+
     public function scopeChecked(Builder $query): Builder
     {
         return $query->where('status', ReturnBookStatus::CHECKED->value);
     }
+
     public function scopeMember(Builder $query, int $user_id): Builder
     {
         return $query->where('user_id', $user_id);
@@ -100,5 +94,13 @@ class ReturnBook extends Model
     public function getDaysLate(): int
     {
         return max(0, Carbon::parse($this->loan->due_date)->diffInDays(Carbon::parse($this->loan->return_date)));
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'return_date' => 'date',
+            'status' => ReturnBookStatus::class,
+        ];
     }
 }

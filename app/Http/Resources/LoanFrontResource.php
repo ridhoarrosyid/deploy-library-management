@@ -23,7 +23,7 @@ class LoanFrontResource extends JsonResource
             'created_at' => Carbon::parse($this->created_at)->format('d M Y'),
             'user' => $this->whenLoaded('user', [
                 'id' => $this->user?->id,
-                'name' => $this->user?->name
+                'name' => $this->user?->name,
             ]),
             'book' => $this->whenLoaded('book', [
                 'id' => $this->book?->id,

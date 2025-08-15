@@ -10,7 +10,6 @@ use App\Models\Loan;
 use App\Models\ReturnBook;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -45,7 +44,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'page_settings' => [
                 'title' => 'Dashboard',
-                'subtitle' => 'Menampilkan semua statistik yang ada di platform ini.'
+                'subtitle' => 'Menampilkan semua statistik yang ada di platform ini.',
             ],
             'page_data' => [
                 'transactionChart' => $this->chart(),
@@ -67,8 +66,8 @@ class DashboardController extends Controller
                     })->count(),
                 'total_fines' => auth()->user()->hasRole('member') ? Fine::query()
                     ->where('user_id', auth()->user()->id)
-                    ->sum('total_fee') : 0
-            ]
+                    ->sum('total_fee') : 0,
+            ],
         ]);
     }
 
@@ -88,7 +87,6 @@ class DashboardController extends Controller
             ->groupBy('date')
             ->orderBy('date')
             ->pluck('loan', 'date');
-
 
         $return_books = ReturnBook::query()
             ->selectRaw('DATE(return_date) as date, COUNT(*) as returns')
@@ -112,9 +110,10 @@ class DashboardController extends Controller
             $chart[] = [
                 'date' => $date_string,
                 'loan' => $loans->get($date_string, 0),
-                'return_book' => $return_books->get($date_string, 0)
+                'return_book' => $return_books->get($date_string, 0),
             ];
         }
+
         return $chart;
     }
 }

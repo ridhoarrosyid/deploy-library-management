@@ -8,7 +8,6 @@ use App\Http\Requests\Admin\StockRequest;
 use App\Http\Resources\Admin\StockResource;
 use App\Models\Stock;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Throwable;
@@ -27,18 +26,18 @@ class BookStockReportController extends Controller
         return Inertia::render('Admin/BookStockReports/Index', [
             'page_settings' => [
                 'title' => 'Laporan Stock Buku',
-                'subtitle' => 'Menampilkan laporan stok buku yang tersedia pada platform ini'
+                'subtitle' => 'Menampilkan laporan stok buku yang tersedia pada platform ini',
             ],
             'stocks' => StockResource::collection($stocks)->additional([
                 'meta' => [
-                    'has_pages' => $stocks->hasPages()
-                ]
+                    'has_pages' => $stocks->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
         ]);
     }
 
@@ -49,9 +48,9 @@ class BookStockReportController extends Controller
                 'title' => 'Edit Stok',
                 'subtitle' => 'Edit stok di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.book-stock-reports.update', $stock)
+                'action' => route('admin.book-stock-reports.update', $stock),
             ],
-            'stock' => $stock
+            'stock' => $stock,
         ]);
     }
 
@@ -61,6 +60,7 @@ class BookStockReportController extends Controller
             $minimum_total = $request->available + $request->loan + $request->lost + $request->damaged;
             if ($request->total < $minimum_total) {
                 flashMessage('Total tidak boleh lebih kecil dari peminjaman yang tersedia, hilang, rusak, dan dipinjam', 'error');
+
                 return to_route('admin.book-stock-reports.index');
             }
             $stock->update([
@@ -68,9 +68,11 @@ class BookStockReportController extends Controller
                 'available' => $request->available,
             ]);
             flashMessage(MessageType::UPDATED->message('stok buku'));
+
             return to_route('admin.book-stock-reports.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.book-stock-reports.index');
         }
     }

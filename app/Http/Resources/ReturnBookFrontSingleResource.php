@@ -28,13 +28,13 @@ class ReturnBookFrontSingleResource extends JsonResource
                 'title' => $this->book?->title,
                 'slug' => $this->book?->slug,
                 'cover' => $this->book?->cover ? Storage::url($this->book?->cover) : null,
-                'synopsis' => $this->synopsis
+                'synopsis' => $this->synopsis,
             ]),
             'loan' => $this->whenLoaded('loan', [
                 'id' => $this->loan?->id,
                 'loan_code' => $this->loan?->loan_code,
                 'loan_date' => Carbon::parse($this->loan?->loan_date)->format('d M Y'),
-                'due_date' => Carbon::parse($this->loan?->due_date)->format('d M Y')
+                'due_date' => Carbon::parse($this->loan?->due_date)->format('d M Y'),
             ]),
             'user' => $this->whenLoaded('user', [
                 'id' => $this->loan?->id,
@@ -50,7 +50,7 @@ class ReturnBookFrontSingleResource extends JsonResource
             'return_book_check' => $this->whenLoaded('returnBookCheck', [
                 'condition' => $this->returnBookCheck?->condition,
                 'notes' => $this->returnBookCheck?->notes,
-            ])
+            ]),
         ];
     }
 }

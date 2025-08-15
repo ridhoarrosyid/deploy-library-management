@@ -21,7 +21,7 @@ class PublisherFactory extends Factory
             'slug' => str()->lower(str()->slug($name) . str()->random(4)),
             'address' => fake('id_ID')->address(),
             'email' => fake('id_ID')->unique()->safeEmail(),
-            'phone' => fake('id_ID')->phoneNumber()
+            'phone' => fake('id_ID')->phoneNumber(),
         ];
     }
 }

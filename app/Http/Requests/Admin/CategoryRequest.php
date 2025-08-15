@@ -31,7 +31,6 @@ class CategoryRequest extends FormRequest
             'description' => ['nullable'],
             'cover' => ['nullable', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
 
-
         ];
     }
 
@@ -40,7 +39,7 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'Nama',
             'description' => 'Deskripsi',
-            'cover' => 'Cover'
+            'cover' => 'Cover',
         ];
     }
 }

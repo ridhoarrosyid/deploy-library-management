@@ -9,7 +9,6 @@ use App\Models\Loan;
 use App\Models\ReturnBook;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
@@ -20,7 +19,7 @@ class ReturnBookFrontController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('password.confirm', except: ['store'])
+            new Middleware('password.confirm', except: ['store']),
         ];
     }
 
@@ -39,24 +38,24 @@ class ReturnBookFrontController extends Controller implements HasMiddleware
         return Inertia::render('Front/ReturnBooks/Index', [
             'page_settings' => [
                 'title' => 'Pengembalian Buku',
-                'subtitle' => 'Menampilkan seluruh data pengembalian buku Anda yang ada di platform.'
+                'subtitle' => 'Menampilkan seluruh data pengembalian buku Anda yang ada di platform.',
             ],
             'return_books' => ReturnBookFrontResource::collection($returnBooks)->additional([
                 'meta' => [
-                    'has_pages' => $returnBooks->hasPages()
-                ]
+                    'has_pages' => $returnBooks->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
+                'load' => 10,
             ],
             'page_data' => [
                 'returned' => ReturnBook::query()->member(auth()->user()->id)->returned()->count(),
                 'fine' => ReturnBook::query()->member(auth()->user()->id)->fine()->count(),
                 'checked' => ReturnBook::query()->member(auth()->user()->id)->checked()->count(),
 
-            ]
+            ],
 
         ]);
     }
@@ -67,10 +66,11 @@ class ReturnBookFrontController extends Controller implements HasMiddleware
             'return_book_code' => str()->lower(str()->random(10)),
             'book_id' => $book->id,
             'user_id' => auth()->user()->id,
-            'return_date' => Carbon::today()
+            'return_date' => Carbon::today(),
         ]);
 
         flashMessage('Buku Anda sedang dilakukan pengecekan oleh petugas kami.');
+
         return to_route('front.return-books.show', [$return_book->return_book_code]);
     }
 
@@ -79,9 +79,9 @@ class ReturnBookFrontController extends Controller implements HasMiddleware
         return Inertia::render('Front/ReturnBooks/Show', [
             'page_settings' => [
                 'title' => 'Detail Pengembailan Buku',
-                'subtitle' => 'Dapat melihat detail pengembalian buku yang Anda kembalikan'
+                'subtitle' => 'Dapat melihat detail pengembalian buku yang Anda kembalikan',
             ],
-            'return_book' => new ReturnBookFrontSingleResource($returnBook->load(['book', 'user', 'loan', 'fine', 'returnBookCheck']))
+            'return_book' => new ReturnBookFrontSingleResource($returnBook->load(['book', 'user', 'loan', 'fine', 'returnBookCheck'])),
         ]);
     }
 }

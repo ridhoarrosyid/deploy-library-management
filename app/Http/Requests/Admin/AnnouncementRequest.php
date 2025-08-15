@@ -24,7 +24,7 @@ class AnnouncementRequest extends FormRequest
         return [
             'message' => ['required', 'min:3', 'max:255', 'string'],
             'url' => ['nullable', 'url', 'max:255'],
-            'is_active' => ['required', 'boolean']
+            'is_active' => ['required', 'boolean'],
         ];
     }
 
@@ -33,7 +33,7 @@ class AnnouncementRequest extends FormRequest
         return [
             'message' => 'Pesan',
             'url' => 'URL',
-            'is_active' => 'Aktif'
+            'is_active' => 'Aktif',
         ];
     }
 }

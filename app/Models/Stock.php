@@ -14,7 +14,7 @@ class Stock extends Model
         'available',
         'loan',
         'lost',
-        'damaged'
+        'damaged',
     ];
 
     public function book(): BelongsTo
@@ -26,7 +26,7 @@ class Stock extends Model
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->whereHas('book', fn($query) => $query->where('title', 'REGEXP', $search));
+                $query->whereHas('book', fn ($query) => $query->where('title', 'REGEXP', $search));
             });
         });
     }
@@ -36,7 +36,7 @@ class Stock extends Model
         $query->when(($sorts['field'] ?? null) && ($sorts['direction'] ?? null), function ($query) use ($sorts) {
             match ($sorts['field']) {
                 'book_id' => $query->join('book', 'stock.book_id', '=', 'books.id')->orderBy('books.title', $sorts['direction']),
-                default =>  $query->orderBy($sorts['field'], $sorts['direction'])
+                default => $query->orderBy($sorts['field'], $sorts['direction'])
             };
         });
     }

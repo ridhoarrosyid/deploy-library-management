@@ -30,15 +30,27 @@ class Book extends Model
         'cover',
         'price',
         'category_id',
-        'publisher_id'
+        'publisher_id',
     ];
 
-    protected function casts(): array
+    public static function leastLoanBooks($limit = 5)
     {
-        return [
-            'language' => BookLanguage::class,
-            'status' => BookStatus::class
-        ];
+        return self::query()
+            ->select(['id', 'title', 'author'])
+            ->withCount('loans')
+            ->orderBy('loans_count')
+            ->limit($limit)
+            ->get();
+    }
+
+    public static function mostLoanBooks($limit = 5)
+    {
+        return self::query()
+            ->select(['id', 'title', 'author'])
+            ->withCount('loans')
+            ->orderBy('loans_count', 'desc')
+            ->limit($limit)
+            ->get();
     }
 
     public function category(): BelongsTo
@@ -61,7 +73,6 @@ class Book extends Model
         return $this->hasMany(Loan::class);
     }
 
-
     public function scopeFilter(Builder $query, array $filters): void
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
@@ -83,9 +94,10 @@ class Book extends Model
         if ($this->stock->$columnToDecrement > 0) {
             return $this->stock()->update([
                 $columnToIncrement => $this->stock->$columnToIncrement + 1,
-                $columnToDecrement => $this->stock->$columnToDecrement - 1
+                $columnToDecrement => $this->stock->$columnToDecrement - 1,
             ]);
         }
+
         return false;
     }
 
@@ -109,23 +121,11 @@ class Book extends Model
         return $this->updateStock('available', 'loan');
     }
 
-    public static function leastLoanBooks($limit = 5)
+    protected function casts(): array
     {
-        return self::query()
-            ->select(['id', 'title', 'author'])
-            ->withCount('loans')
-            ->orderBy('loans_count')
-            ->limit($limit)
-            ->get();
-    }
-
-    public static function mostLoanBooks($limit = 5)
-    {
-        return self::query()
-            ->select(['id', 'title', 'author'])
-            ->withCount('loans')
-            ->orderBy('loans_count', 'desc')
-            ->limit($limit)
-            ->get();
+        return [
+            'language' => BookLanguage::class,
+            'status' => BookStatus::class,
+        ];
     }
 }

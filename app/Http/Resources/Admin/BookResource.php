@@ -35,15 +35,15 @@ class BookResource extends JsonResource
             ],
             'publisher' => [
                 'id' => $this->publisher?->id,
-                'name' => $this->publisher?->name
+                'name' => $this->publisher?->name,
             ],
             'stock' => [
                 'total' => $this->stock?->total,
                 'available' => $this->stock?->available,
                 'borrow' => $this->stock?->borrow,
                 'lost' => $this->stock?->lost,
-                'damaged' => $this->stock?->damaged
-            ]
+                'damaged' => $this->stock?->damaged,
+            ],
         ];
     }
 }

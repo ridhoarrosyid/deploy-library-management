@@ -28,12 +28,12 @@ class BookRequest extends FormRequest
             'author' => ['required', 'min:3', 'max:225', 'string'],
             'publication_year' => ['required', 'numeric', 'integer'],
             'isbn' => ['required', 'string', 'max:255'],
-            'language' => ['required', new Enum(BookLanguage::class),],
+            'language' => ['required', new Enum(BookLanguage::class)],
             'synopsis' => ['nullable'],
             'number_of_pages' => ['required', 'integer', 'numeric'],
             'cover' => ['nullable', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
             'price' => ['required', 'numeric', 'min:0'],
-            'category_id' => ['required', 'exists:categories,id',],
+            'category_id' => ['required', 'exists:categories,id'],
             'publisher_id' => ['required', 'exists:publishers,id'],
 
         ];
@@ -51,7 +51,7 @@ class BookRequest extends FormRequest
             'number_of_pages' => 'Jumlah halaman',
             'cover' => 'Cover',
             'category_id' => 'Kategori',
-            'publisher_id' => 'Penerbit'
+            'publisher_id' => 'Penerbit',
         ];
     }
 }

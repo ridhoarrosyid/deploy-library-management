@@ -11,18 +11,18 @@ class ReturnBookCheck extends Model
     protected $fillable = [
         'return_book_id',
         'condition',
-        'notes'
+        'notes',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'condition' => ReturnBookCondition::class
-        ];
-    }
 
     public function returnBook(): BelongsTo
     {
         return $this->belongsTo(ReturnBook::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'condition' => ReturnBookCondition::class,
+        ];
     }
 }
