@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\FinePaymentStatus;
 use App\Enums\ReturnBookStatus;
+use App\Http\Resources\Admin\TransactionReturnBookResource;
+use App\Http\Resources\ReturnBookFrontSingleResource;
 use App\Models\ReturnBook;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -22,15 +24,21 @@ class PaymentController extends Controller
         Config::$isSanitized = true;
         Config::$is3ds = true;
 
+        $return_book = ReturnBook::query()
+            ->where('return_book_code', $request->oreder_id)
+            ->with(['user', 'fine'])
+            ->first();
+        $return_book = new ReturnBookFrontSingleResource($return_book);
+
         $params = [
             'transaction_details' => [
-                'order_id' => $request->order_id,
-                'gross_amount' => $request->gross_amount,
+                'order_id' => $return_book->return_book_code,
+                'gross_amount' => $return_book->fine->total_fee,
             ],
             'customer_details' => [
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
+                'first_name' => $return_book->user->name,
+                'last_name' => '',
+                'email' => $return_book->user->email,
             ],
         ];
 

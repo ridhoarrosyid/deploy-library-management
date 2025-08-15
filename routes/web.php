@@ -41,9 +41,9 @@ Route::controller(ReturnBookFrontController::class)->middleware(['auth', 'verifi
 Route::get('fines', FineFrontController::class)->middleware(['auth', 'verified', 'dynamic.role_permission'])->name('front.fines.index');
 
 Route::controller(PaymentController::class)->group(function () {
-    Route::post('payments', 'create')->name('payments.create');
+    Route::post('payments', 'create')->middleware(['auth', 'verified'])->name('payments.create');
     Route::get('payments/success', 'success')->name('payments.success');
-    Route::post('payments/callback', 'callback')->name('payments.callback');
+    Route::post('payments/callback', 'callback')->middleware(['auth', 'verified'])->name('payments.callback');
 });
 
 Route::middleware(['auth', 'dynamic.role_permission'])->group(function () {

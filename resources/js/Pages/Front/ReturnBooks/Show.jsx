@@ -19,10 +19,6 @@ export default function Show(props) {
     try {
       const respons = await axios.post(route('payments.create'), {
         order_id: props.return_book.return_book_code,
-        gross_amount: props.return_book.fine.total_fee,
-        first_name: props.return_book.user.name,
-        last_name: '',
-        email: props.return_book.user.email,
       });
 
       const snapToken = respons.data.snapToken;
