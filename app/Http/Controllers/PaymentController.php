@@ -25,7 +25,7 @@ class PaymentController extends Controller
         Config::$is3ds = true;
 
         $return_book = ReturnBook::query()
-            ->where('return_book_code', $request->oreder_id)
+            ->where('return_book_code', $request->order_id)
             ->with(['user', 'fine'])
             ->first();
         $return_book = new ReturnBookFrontSingleResource($return_book);
