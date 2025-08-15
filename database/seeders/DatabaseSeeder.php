@@ -33,5 +33,6 @@ class DatabaseSeeder extends Seeder
         ])->assignRole(Role::create(['name' => 'member']));
         $this->call(PublisherSeeder::class);
         $this->call(CategorySeeder::class);
+        $this->call(RouteAccessSeeder::class);
     }
 }
