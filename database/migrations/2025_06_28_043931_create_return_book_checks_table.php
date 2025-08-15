@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('return_book_checks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('return_book_id')->constrained('return_books')->cascadeOnUpdate();
+            $table->foreignId('return_book_id')->constrained('return_books')->cascadeOnDelete();
             $table->string('condition')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
