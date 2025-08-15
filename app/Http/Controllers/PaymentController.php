@@ -30,6 +30,12 @@ class PaymentController extends Controller
             ->first();
         $return_book = new ReturnBookFrontSingleResource($return_book);
 
+        if ($return_book->user->id !== auth()->user()->id) {
+            return response()->json([
+                'error' => 'Forbidden'
+            ], 403);
+        }
+
         $params = [
             'transaction_details' => [
                 'order_id' => $return_book->return_book_code,

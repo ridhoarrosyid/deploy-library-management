@@ -39,6 +39,7 @@ class ReturnBookFrontSingleResource extends JsonResource
             'user' => $this->whenLoaded('user', [
                 'id' => $this->loan?->id,
                 'name' => $this->user?->name,
+                'email' => $this->user?->email
             ]),
             'fine' => $this->whenLoaded('fine', [
                 'id' => $this->fine?->id,
