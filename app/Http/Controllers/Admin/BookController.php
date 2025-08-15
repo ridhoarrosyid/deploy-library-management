@@ -13,7 +13,6 @@ use App\Models\Category;
 use App\Models\Publisher;
 use App\Traits\HasFile;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Throwable;
@@ -21,6 +20,7 @@ use Throwable;
 class BookController extends Controller
 {
     use HasFile;
+
     public function index(): Response
     {
         $books = Book::query()
@@ -32,23 +32,22 @@ class BookController extends Controller
             ->paginate(request()->load ?? 10)
             ->withQueryString();
 
-
         return Inertia::render('Admin/Books/Index', [
             'page_settings' => [
                 'title' => 'Buku',
-                'subtitle' => 'Menampilkann semua data buku yang tersedia di platform ini'
+                'subtitle' => 'Menampilkann semua data buku yang tersedia di platform ini',
             ],
             'books' => BookResource::collection($books)->additional([
                 'meta' => [
-                    'has_pages' => $books->hasPages()
+                    'has_pages' => $books->hasPages(),
                 ],
 
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
         ]);
     }
 
@@ -59,20 +58,20 @@ class BookController extends Controller
                 'title' => 'Tambah Buku',
                 'subtitle' => 'Buat buku baru di sini, klik simpan setelah selesai',
                 'method' => 'POST',
-                'action' => route('admin.books.store')
+                'action' => route('admin.books.store'),
             ],
             'page_data' => [
                 'publication_years' => range(2000, now()->year),
                 'languages' => BookLanguage::options(),
-                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn($item) => [
+                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn ($item) => [
                     'value' => $item->id,
-                    'label' => $item->name
+                    'label' => $item->name,
                 ]),
-                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn($item) => [
+                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn ($item) => [
                     'value' => $item->id,
-                    'label' => $item->name
-                ])
-            ]
+                    'label' => $item->name,
+                ]),
+            ],
         ]);
     }
 
@@ -97,12 +96,12 @@ class BookController extends Controller
                 'publisher_id' => $request->publisher_id,
             ]);
 
-
-
             flashMessage(MessageType::CREATED->message('Buku'));
+
             return to_route('admin.books.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.books.index');
         }
     }
@@ -110,27 +109,26 @@ class BookController extends Controller
     public function edit(Book $book): Response
     {
 
-
         return Inertia::render('Admin/Books/Edit', [
             'page_settings' => [
                 'title' => 'Edit Buku',
                 'subtitle' => 'Edit buku di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.books.update', $book->id)
+                'action' => route('admin.books.update', $book->id),
             ],
             'page_data' => [
                 'publication_years' => range(2000, now()->year),
                 'languages' => BookLanguage::options(),
-                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn($item) => [
+                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn ($item) => [
                     'value' => $item->id,
-                    'label' => $item->name
+                    'label' => $item->name,
                 ]),
-                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn($item) => [
+                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn ($item) => [
                     'value' => $item->id,
-                    'label' => $item->name
-                ])
+                    'label' => $item->name,
+                ]),
             ],
-            'book' => $book
+            'book' => $book,
         ]);
     }
 
@@ -155,12 +153,12 @@ class BookController extends Controller
                 'publisher_id' => $request->publisher_id,
             ]);
 
-
-
             flashMessage(MessageType::UPDATED->message('Buku'));
+
             return to_route('admin.books.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.books.index');
         }
     }
@@ -173,9 +171,11 @@ class BookController extends Controller
             $book->delete();
 
             flashMessage(MessageType::DELETED->message('Buku'));
+
             return to_route('admin.books.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.books.index');
         }
     }
@@ -194,10 +194,11 @@ class BookController extends Controller
 
         if ($last_book) {
             $last_order = (int) substr($last_book->book_code, -4);
-            $order =  $last_order + 1;
+            $order = $last_order + 1;
         }
 
         $ordering = str_pad($order, 4, '0', STR_PAD_LEFT);
+
         return $book_code_prefix . $ordering;
     }
 }

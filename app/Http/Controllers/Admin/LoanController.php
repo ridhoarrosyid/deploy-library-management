@@ -11,7 +11,6 @@ use App\Models\Loan;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Throwable;
@@ -32,18 +31,18 @@ class LoanController extends Controller
         return Inertia::render('Admin/Loans/Index', [
             'page_settings' => [
                 'title' => 'Peminjaman',
-                'subtitle' => 'Menampilkan semua data peminjaman yang tersedia pada platform ini'
+                'subtitle' => 'Menampilkan semua data peminjaman yang tersedia pada platform ini',
             ],
             'loans' => LoanResource::collection($loans)->additional([
                 'meta' => [
-                    'has_pages' => $loans->hasPages()
-                ]
+                    'has_pages' => $loans->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
         ]);
     }
 
@@ -54,30 +53,30 @@ class LoanController extends Controller
                 'title' => 'Tambah Pinjaman',
                 'subtitle' => 'Tambah pinjaman di sini klik simpan setelah selesai',
                 'method' => 'POST',
-                'action' => route('admin.loans.store')
+                'action' => route('admin.loans.store'),
             ],
             'page_data' => [
                 'date' => [
                     'loan_date' => Carbon::now()->toDateString(),
-                    'due_date' => Carbon::now()->addDays(7)->toDateString()
+                    'due_date' => Carbon::now()->addDays(7)->toDateString(),
                 ],
                 'books' => Book::query()
                     ->select(['id', 'title'])
-                    ->whereHas('stock', fn($query) => $query->where('available', '>', 0))
+                    ->whereHas('stock', fn ($query) => $query->where('available', '>', 0))
                     ->get()
-                    ->map(fn($item) => [
+                    ->map(fn ($item) => [
                         'label' => $item->title,
-                        'value' => $item->title
+                        'value' => $item->title,
                     ]),
                 'users' => User::query()
                     ->select(['id', 'name'])
-                    ->whereHas('roles', fn($query) => $query->where('name', 'member'))
+                    ->whereHas('roles', fn ($query) => $query->where('name', 'member'))
                     ->get()
-                    ->map(fn($item) => [
+                    ->map(fn ($item) => [
                         'label' => $item->name,
-                        'value' => $item->name
-                    ])
-            ]
+                        'value' => $item->name,
+                    ]),
+            ],
         ]);
     }
 
@@ -85,7 +84,7 @@ class LoanController extends Controller
     {
         try {
             $book = Book::query()
-                ->whereHas('stock', fn($query) => $query->where('available', '>', 0))
+                ->whereHas('stock', fn ($query) => $query->where('available', '>', 0))
                 ->where('title', $request->book)
                 ->firstOrFail();
 
@@ -95,6 +94,7 @@ class LoanController extends Controller
 
             if (Loan::checkLoanBook($user->id, $book->id)) {
                 flashMessage('Pengguna sudah meminjam buku ini', 'error');
+
                 return to_route('admin.loans.index');
             }
 
@@ -104,7 +104,7 @@ class LoanController extends Controller
                     'user_id' => $user->id,
                     'book_id' => $book->id,
                     'loan_date' => Carbon::now()->toDateString(),
-                    'due_date' => Carbon::now()->addDays(7)->toDateString()
+                    'due_date' => Carbon::now()->addDays(7)->toDateString(),
                 ]), function ($loan) {
                     $loan->book->stock_loan();
                     flashMessage('Berhasil menambahkan peminjaman');
@@ -114,6 +114,7 @@ class LoanController extends Controller
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
             dd($e->getMessage());
+
             return to_route('admin.loans.index');
         }
     }
@@ -125,31 +126,31 @@ class LoanController extends Controller
                 'title' => 'Edit Peminjaman Buku',
                 'subtitle' => 'Edit peminjaman buku di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.loans.update', $loan)
+                'action' => route('admin.loans.update', $loan),
             ],
             'page_data' => [
                 'date' => [
                     'loan_date' => Carbon::now()->toDateString(),
-                    'due_date' => Carbon::now()->addDays(7)->toDateString()
+                    'due_date' => Carbon::now()->addDays(7)->toDateString(),
                 ],
                 'books' => Book::query()
                     ->select(['id', 'title'])
-                    ->whereHas('stock', fn($query) => $query->where('available', '>', 0))
+                    ->whereHas('stock', fn ($query) => $query->where('available', '>', 0))
                     ->get()
-                    ->map(fn($item) => [
+                    ->map(fn ($item) => [
                         'label' => $item->title,
-                        'value' => $item->title
+                        'value' => $item->title,
                     ]),
                 'users' => User::query()
                     ->select(['id', 'name'])
-                    ->whereHas('roles', fn($query) => $query->where('name', 'member'))
+                    ->whereHas('roles', fn ($query) => $query->where('name', 'member'))
                     ->get()
-                    ->map(fn($item) => [
+                    ->map(fn ($item) => [
                         'label' => $item->name,
-                        'value' => $item->name
-                    ])
+                        'value' => $item->name,
+                    ]),
             ],
-            'loan' => $loan->load(['user', 'book'])
+            'loan' => $loan->load(['user', 'book']),
         ]);
     }
 
@@ -160,13 +161,13 @@ class LoanController extends Controller
                 ->where('title', $request->book)
                 ->firstOrFail();
 
-
             $user = User::query()
                 ->where('name', $request->user)
                 ->firstOrFail();
 
             if (Loan::checkLoanBook($user->id, $book->id)) {
                 flashMessage('Pengguna sudah meminjam buku ini', 'error');
+
                 return to_route('admin.loans.index');
             }
 
@@ -176,10 +177,12 @@ class LoanController extends Controller
             ]);
 
             flashMessage(MessageType::UPDATED->message('Peminjaman'));
+
             return to_route('admin.loans.index');
         } catch (Throwable $e) {
             dd($e->getMessage());
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.loans.index');
         }
     }
@@ -189,9 +192,11 @@ class LoanController extends Controller
         try {
             $loan->delete();
             flashMessage(MessageType::UPDATED->message('Peminjaman'));
+
             return to_route('admin.loans.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.loans.index');
         }
     }

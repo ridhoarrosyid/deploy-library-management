@@ -37,15 +37,15 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user() ? new UserSingleResource($request->user()) : null,
             ],
-            'ziggy' => fn() => [
+            'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'flash_message' => fn() => [
+            'flash_message' => fn () => [
                 'type' => $request->session()->get('type'),
-                'message' => $request->session()->get('message')
+                'message' => $request->session()->get('message'),
             ],
-            'announcement' => fn() => Announcement::query()->where('is_Active', true)->first()
+            'announcement' => fn () => Announcement::query()->where('is_Active', true)->first(),
         ];
     }
 }

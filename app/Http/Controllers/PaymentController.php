@@ -25,25 +25,24 @@ class PaymentController extends Controller
         $params = [
             'transaction_details' => [
                 'order_id' => $request->order_id,
-                'gross_amount' => $request->gross_amount
+                'gross_amount' => $request->gross_amount,
             ],
             'customer_details' => [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
-                'email' => $request->email
-            ]
+                'email' => $request->email,
+            ],
         ];
 
         try {
             $snapToken = Snap::getSnapToken($params);
-            return response()->json([
-                'snapToken' => $snapToken
-            ], 200);
-        } catch (Exception $e) {
-            dd($e);
 
             return response()->json([
-                'error' => $e->getMessage()
+                'snapToken' => $snapToken,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
@@ -54,7 +53,7 @@ class PaymentController extends Controller
         $signatureKey = signatureMidtrans($request->order_id, $request->status_code, $request->gross_amount, $serverKey);
         if ($request->signature_key !== $signatureKey) {
             return response()->json([
-                'error' => 'Unauthorized'
+                'error' => 'Unauthorized',
             ], 401);
         }
 
@@ -62,15 +61,15 @@ class PaymentController extends Controller
             ->where('return_book_code', $request->order_id)
             ->first();
 
-        if (!$return_book) {
+        if (! $return_book) {
             return response()->json([
-                'error' => 'Pengembalian tidak ditemukan'
+                'error' => 'Pengembalian tidak ditemukan',
             ], 404);
         }
 
-        if (!$return_book->fine) {
+        if (! $return_book->fine) {
             return response()->json([
-                'error' => "Denda tidak ditemukan"
+                'error' => 'Denda tidak ditemukan',
             ], 404);
         }
 
@@ -82,7 +81,7 @@ class PaymentController extends Controller
                 $return_book->save();
 
                 return response()->json([
-                    'message' => 'Berhasil melakukan pembayaran'
+                    'message' => 'Berhasil melakukan pembayaran',
                 ]);
             case 'capture':
                 $return_book->fine->payment_status = FinePaymentStatus::SUCCESS->value;
@@ -91,7 +90,7 @@ class PaymentController extends Controller
                 $return_book->save();
 
                 return response()->json([
-                    'message' => 'Berhasil melakukan pembayaran'
+                    'message' => 'Berhasil melakukan pembayaran',
                 ]);
 
             case 'pending':
@@ -99,7 +98,7 @@ class PaymentController extends Controller
                 $return_book->fine->save();
 
                 return response()->json([
-                    'message' => 'Pembayaran tertunda'
+                    'message' => 'Pembayaran tertunda',
                 ]);
 
             case 'expire':
@@ -107,7 +106,7 @@ class PaymentController extends Controller
                 $return_book->fine->save();
 
                 return response()->json([
-                    'message' => 'Pembayaran kadaluarsa'
+                    'message' => 'Pembayaran kadaluarsa',
                 ]);
 
             case 'cancel':
@@ -115,12 +114,12 @@ class PaymentController extends Controller
                 $return_book->fine->save();
 
                 return response()->json([
-                    'message' => 'Pembayaran dibatalkan'
+                    'message' => 'Pembayaran dibatalkan',
                 ]);
 
             default:
                 return response()->json([
-                    'message' => 'Status transaksi tidak diketahui'
+                    'message' => 'Status transaksi tidak diketahui',
                 ], 400);
         }
     }

@@ -22,14 +22,14 @@ class AssignPermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'permissions'=>['nullable', 'exists:permissions,id','']
+            'permissions' => ['nullable', 'exists:permissions,id', ''],
         ];
     }
 
-    public function attributes():array
+    public function attributes(): array
     {
         return [
-            'permissions'=>'Izin'
+            'permissions' => 'Izin',
         ];
     }
 }

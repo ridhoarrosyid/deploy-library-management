@@ -8,7 +8,6 @@ use App\Http\Requests\Admin\AssignUserRequest;
 use App\Http\Resources\Admin\AssignUserResource;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
@@ -33,18 +32,18 @@ class AssignUserController extends Controller
         return Inertia::render('Admin/AssignUsers/Index', [
             'page_settings' => [
                 'title' => 'Tetapkan Peran',
-                'subtitle' => 'Menampilkan seluruh data tetapkan peran yang ada di platform'
+                'subtitle' => 'Menampilkan seluruh data tetapkan peran yang ada di platform',
             ],
             'users' => AssignUserResource::collection($users)->additional([
                 'meta' => [
-                    'has_pages' => $users->hasPages()
-                ]
+                    'has_pages' => $users->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
         ]);
     }
 
@@ -55,13 +54,13 @@ class AssignUserController extends Controller
                 'title' => 'Sinkronisasi Peran',
                 'subtitle' => 'Sinkronisasi peran di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.assign-users.update', $user)
+                'action' => route('admin.assign-users.update', $user),
             ],
             'user' => $user->load(['roles']),
-            'roles' => Role::query()->select(['id', 'name'])->where('guard_name', 'web')->get()->map(fn($item) => [
+            'roles' => Role::query()->select(['id', 'name'])->where('guard_name', 'web')->get()->map(fn ($item) => [
                 'label' => $item->name,
-                'value' => $item->id
-            ])
+                'value' => $item->id,
+            ]),
         ]);
     }
 
@@ -75,6 +74,7 @@ class AssignUserController extends Controller
         } catch (Throwable $e) {
             dd($e);
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.assign-users.index');
         }
     }

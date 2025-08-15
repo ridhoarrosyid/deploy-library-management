@@ -32,11 +32,11 @@ class BookFrontSingleResource extends JsonResource
             ]),
             'publisher' => $this->whenLoaded('publisher', [
                 'id' => $this->publisher?->id,
-                'name' => $this->publisher?->name
+                'name' => $this->publisher?->name,
             ]),
             'stock' => $this->whenLoaded('stock', [
-                'available' => $this->stock?->available
-            ])
+                'available' => $this->stock?->available,
+            ]),
         ];
     }
 }

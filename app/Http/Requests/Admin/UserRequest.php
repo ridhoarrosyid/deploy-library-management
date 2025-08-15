@@ -7,8 +7,6 @@ use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
-
-
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -32,19 +30,19 @@ class UserRequest extends FormRequest
                     'required',
                     'min:8',
                     'max:255',
-                    'confirmed'
+                    'confirmed',
                 ]),
                 Rule::when($this->routeIs('admin.users.update'), [
                     'nullable',
                     'min:8',
                     'max:255',
-                    'confirmed'
-                ])
+                    'confirmed',
+                ]),
             ],
             'phone' => ['nullable', 'min:10', 'max:16'],
             'avatar' => ['nullable', 'mimes:png,jpg', 'max:2048'],
             'date_of_birth' => ['nullable', 'date'],
-            'address' => ['nullable', 'string', 'min:3', 'max:255']
+            'address' => ['nullable', 'string', 'min:3', 'max:255'],
         ];
     }
 
@@ -57,7 +55,7 @@ class UserRequest extends FormRequest
             'phone' => 'Nomor HP',
             'avatar' => 'Avatar',
             'date_of_birth' => 'Tanggal Lahir',
-            'address' => 'Alamat'
+            'address' => 'Alamat',
         ];
     }
 }

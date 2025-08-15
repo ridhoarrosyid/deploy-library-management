@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\FinesResource;
 use App\Http\Resources\Admin\MostFineMemberResource;
 use App\Models\Fine;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,16 +20,17 @@ class FineReportController extends Controller
             ->with(['user', 'returnBook'])
             ->paginate(10)
             ->withQueryString();
+
         return Inertia::render('Admin/FineReports/Index', [
             'page_settings' => [
                 'title' => 'Laporan Denda',
-                'subtitle' => 'Menampilkan laporan denda yang ada di platform ini.'
+                'subtitle' => 'Menampilkan laporan denda yang ada di platform ini.',
             ],
             'page_data' => [
                 'fines' => FinesResource::collection($fines)->additional([
                     'meta' => [
-                        'has_pages' => $fines->hasPages()
-                    ]
+                        'has_pages' => $fines->hasPages(),
+                    ],
                 ]),
                 'most_fine_members' => MostFineMemberResource::collection(
                     Fine::select(['user_id', DB::raw('SUM(total_fee) as total_fee')])
@@ -46,8 +46,8 @@ class FineReportController extends Controller
                 'fine_pending' => Fine::query()
                     ->whereNot('payment_status', FinePaymentStatus::SUCCESS->value)
                     ->sum('total_fee'),
-                'total_fines' => Fine::totalFines()
-            ]
+                'total_fines' => Fine::totalFines(),
+            ],
         ]);
     }
 }

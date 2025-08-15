@@ -15,16 +15,16 @@ class FineSettingController extends Controller
 {
     public function create(): Response
     {
-        $fine_setting =  FineSetting::first();
+        $fine_setting = FineSetting::first();
 
         return Inertia::render('Admin/FineSettings/Create', [
             'page_settings' => [
                 'title' => 'Pengaturan denda',
                 'subtitle' => 'Konfigurasi pengaturan denda di sini, klik simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.fine-settings.store')
+                'action' => route('admin.fine-settings.store'),
             ],
-            'fine_setting' => $fine_setting
+            'fine_setting' => $fine_setting,
         ]);
     }
 
@@ -37,9 +37,11 @@ class FineSettingController extends Controller
                 'lost_fee_percentage' => $request->lost_fee_percentage,
             ]);
             flashMessage('Berhasil melakukan perubahan denda');
+
             return to_route('admin.fine-settings.create');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.fine-settings.create');
         }
     }

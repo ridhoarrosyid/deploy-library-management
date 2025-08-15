@@ -16,6 +16,7 @@ use Throwable;
 class PublisherController extends Controller
 {
     use HasFile;
+
     public function index(): Response
     {
         $publishers = Publisher::query()
@@ -25,21 +26,22 @@ class PublisherController extends Controller
             ->latest('created_at')
             ->paginate(request()->load ?? 10)
             ->withQueryString();
+
         return Inertia::render('Admin/Publishers/Index', [
             'page_settings' => [
                 'title' => 'Penerbit',
-                'subtitle' => 'Menampilkan semua data penerbit yang ada di platform ini'
+                'subtitle' => 'Menampilkan semua data penerbit yang ada di platform ini',
             ],
             'publishers' => PublisherResource::collection($publishers)->additional([
                 'meta' => [
-                    'has_pages' => $publishers->hasPages()
-                ]
+                    'has_pages' => $publishers->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
         ]);
     }
 
@@ -50,8 +52,8 @@ class PublisherController extends Controller
                 'title' => 'Tambah Penerbit',
                 'subtitle' => 'Buat penerbit baru di sini. Klik simpan setelah selesai.',
                 'method' => 'POST',
-                'action' => route('admin.publishers.store')
-            ]
+                'action' => route('admin.publishers.store'),
+            ],
         ]);
     }
 
@@ -64,13 +66,15 @@ class PublisherController extends Controller
                 'address' => $request->address,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'logo' => $this->uploadFile($request, 'logo', 'publisher')
+                'logo' => $this->uploadFile($request, 'logo', 'publisher'),
             ]);
 
             flashMessage(MessageType::CREATED->message('Penerbit'));
+
             return to_route('admin.publishers.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.publishers.index');
         }
     }
@@ -82,9 +86,9 @@ class PublisherController extends Controller
                 'title' => 'Edit',
                 'subtitle' => 'Edit data penerbit. Tekan simpan setelah selesai',
                 'method' => 'PUT',
-                'action' => route('admin.publishers.update', $publisher)
+                'action' => route('admin.publishers.update', $publisher),
             ],
-            'publisher' => $publisher
+            'publisher' => $publisher,
         ]);
     }
 
@@ -93,17 +97,19 @@ class PublisherController extends Controller
         try {
             $publisher->update([
                 'name' => $name = $request->name,
-                'slug' => $publisher->name !== $name ?  str()->lower(str()->slug($name) . str()->random(4)) : $publisher->name,
+                'slug' => $publisher->name !== $name ? str()->lower(str()->slug($name) . str()->random(4)) : $publisher->name,
                 'address' => $request->address,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'logo' => $this->updateFile($request, $publisher, 'logo', 'publisher')
+                'logo' => $this->updateFile($request, $publisher, 'logo', 'publisher'),
             ]);
 
             flashMessage(MessageType::UPDATED->message('Penerbit'));
+
             return to_route('admin.publishers.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.publishers.index');
         }
     }
@@ -114,9 +120,11 @@ class PublisherController extends Controller
             $this->deleteFile($publisher, 'logo');
             $publisher->delete();
             flashMessage(MessageType::DELETED->message('Penerbit'));
+
             return to_route('admin.publishers.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.publishers.index');
         }
     }

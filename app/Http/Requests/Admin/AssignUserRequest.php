@@ -22,14 +22,14 @@ class AssignUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roles' => ['nullable', 'exists:roles,id']
+            'roles' => ['nullable', 'exists:roles,id'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'roles' => 'Peran'
+            'roles' => 'Peran',
         ];
     }
 }

@@ -15,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'gender',
         'phone',
         'date_of_birth',
-        'address'
+        'address',
 
     ];
 
@@ -44,21 +44,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'gender' => UserGender::class,
-            'date_of_birth' => 'date'
-        ];
-    }
 
     public function scopeFilter(Builder $query, array $filters): void
     {
@@ -74,5 +59,20 @@ class User extends Authenticatable implements MustVerifyEmail
         $query->when($sorts['field'] ?? null && $sorts['direction'] ?? null, function ($query) use ($sorts) {
             $query->orderBy($sorts['field'], $sorts['direction']);
         });
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'gender' => UserGender::class,
+            'date_of_birth' => 'date',
+        ];
     }
 }

@@ -8,12 +8,20 @@ use App\Models\Book;
 use App\Models\Loan;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LoanFrontController extends Controller
+class LoanFrontController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('password.confirm', except: ['store']),
+        ];
+    }
+
     public function index(): Response
     {
         $loans = Loan::query()
@@ -29,29 +37,18 @@ class LoanFrontController extends Controller
         return Inertia::render('Front/Loans/Index', [
             'page_settings' => [
                 'title' => 'Peminjaman',
-                'subtitle' => 'Menampilkan semua data peminjaman Anda yang tersedia pada platform ini.'
+                'subtitle' => 'Menampilkan semua data peminjaman Anda yang tersedia pada platform ini.',
             ],
             'loans' => LoanFrontResource::collection($loans)->additional([
                 'meta' => [
-                    'has_pages' => $loans->hasPages()
-                ]
+                    'has_pages' => $loans->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
-        ]);
-    }
-
-    public function show(Loan $loan): Response
-    {
-        return Inertia::render('Front/Loans/Show', [
-            'page_settings' => [
-                'title' => 'Detail Peminjaman Buku',
-                'subtitle' => 'Dapat melihat informasi detail buku yang Anda pinjam'
+                'load' => 10,
             ],
-            'loan' => new LoanFrontSingleResource($loan->load(['book', 'returnBook', 'user']))
         ]);
     }
 
@@ -59,11 +56,13 @@ class LoanFrontController extends Controller
     {
         if (Loan::checkLoanBook(auth()->user()->id, $book->id)) {
             flashMessage('Anda masih meminjam buku ini, kembalikan terlebih dahulu', 'error');
+
             return to_route('front.books.show', [$book->slug]);
         }
 
         if ($book->stock->available <= 0) {
-            flashMessage("Stok buku tidak tersedia", 'error');
+            flashMessage('Stok buku tidak tersedia', 'error');
+
             return to_route('front.books.show', [$book->slug]);
         }
 
@@ -72,12 +71,23 @@ class LoanFrontController extends Controller
             'user_id' => auth()->user()->id,
             'book_id' => $book->id,
             'loan_date' => Carbon::now()->toDateString(),
-            'due_date' => Carbon::now()->addDays(7)->toDateString()
+            'due_date' => Carbon::now()->addDays(7)->toDateString(),
         ]), function ($loan) {
             $loan->book->stock_loan();
             flashMessage('Berhasil melakukan peminjaman buku');
         });
 
         return to_route('front.loans.index');
+    }
+
+    public function show(Loan $loan): Response
+    {
+        return Inertia::render('Front/Loans/Show', [
+            'page_settings' => [
+                'title' => 'Detail Peminjaman Buku',
+                'subtitle' => 'Dapat melihat informasi detail buku yang Anda pinjam',
+            ],
+            'loan' => new LoanFrontSingleResource($loan->load(['book', 'returnBook', 'user'])),
+        ]);
     }
 }

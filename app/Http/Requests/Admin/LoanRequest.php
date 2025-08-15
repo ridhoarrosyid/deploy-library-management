@@ -23,7 +23,7 @@ class LoanRequest extends FormRequest
     {
         return [
             'user' => ['required', 'exists:users,name'],
-            'book' => ['required', 'exists:books,title']
+            'book' => ['required', 'exists:books,title'],
         ];
     }
 
@@ -31,7 +31,7 @@ class LoanRequest extends FormRequest
     {
         return [
             'user' => 'Pengguna',
-            'book' => 'Buku'
+            'book' => 'Buku',
         ];
     }
 }

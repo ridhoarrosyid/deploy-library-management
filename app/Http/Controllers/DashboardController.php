@@ -9,7 +9,7 @@ use App\Models\Fine;
 use App\Models\Loan;
 use App\Models\ReturnBook;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -44,9 +44,10 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'page_settings' => [
                 'title' => 'Dashboard',
-                'subtitle' => 'Menampilkan semua statistik yang ada di platform ini.'
+                'subtitle' => 'Menampilkan semua statistik yang ada di platform ini.',
             ],
             'page_data' => [
+                'transactionChart' => $this->chart(),
                 'loans' => TransactionLoanResource::collection($loans),
                 'return_books' => TransactionReturnBookResource::collection($return_books),
                 'total_books' => auth()->user()->hasAnyRole(['admin', 'operator']) ? Book::count() : 0,
@@ -65,8 +66,54 @@ class DashboardController extends Controller
                     })->count(),
                 'total_fines' => auth()->user()->hasRole('member') ? Fine::query()
                     ->where('user_id', auth()->user()->id)
-                    ->sum('total_fee') : 0
-            ]
+                    ->sum('total_fee') : 0,
+            ],
         ]);
+    }
+
+    public function chart(): array
+    {
+        $end_date = Carbon::now();
+        $start_date = $end_date->copy()->subMonth()->startOfMonth();
+
+        $loans = Loan::query()
+            ->selectRaw('DATE(loan_date) as date, COUNT(*) as loan')
+            ->when(auth()->user()->hasAnyRole(['admin', 'operator']), function ($query) {
+                return $query;
+            }, function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            })
+            ->whereBetween('loan_date', [$start_date, $end_date])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('loan', 'date');
+
+        $return_books = ReturnBook::query()
+            ->selectRaw('DATE(return_date) as date, COUNT(*) as returns')
+            ->when(auth()->user()->hasAnyRole(['admin', 'operator']), function ($query) {
+                return $query;
+            }, function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            })
+            ->whereNotNull('return_date')
+            ->whereBetween('return_date', [$start_date, $end_date])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('returns', 'date');
+
+        $chart = [];
+
+        $period = Carbon::parse($start_date)->daysUntil($end_date);
+
+        foreach ($period as $date) {
+            $date_string = $date->toDateString();
+            $chart[] = [
+                'date' => $date_string,
+                'loan' => $loans->get($date_string, 0),
+                'return_book' => $return_books->get($date_string, 0),
+            ];
+        }
+
+        return $chart;
     }
 }

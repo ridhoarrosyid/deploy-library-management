@@ -10,17 +10,15 @@ use App\Http\Resources\Admin\UserResource;
 use App\Models\User;
 use App\Traits\HasFile;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 use Throwable;
 
-use function PHPUnit\Framework\throwException;
-
 class UserController extends Controller
 {
     use HasFile;
+
     public function index(): Response
     {
         $users = (User::query())
@@ -30,21 +28,22 @@ class UserController extends Controller
             ->latest()
             ->paginate(request()->load ?? 10)
             ->withQueryString();
+
         return Inertia::render('Admin/Users/Index', [
             'page_settings' => [
                 'title' => 'Pengguna',
-                'subtitle' => 'Menampilkan semua data pengguna yang tersedia di platform ini'
+                'subtitle' => 'Menampilkan semua data pengguna yang tersedia di platform ini',
             ],
             'users' => UserResource::collection($users)->additional([
                 'meta' => [
-                    'has_pages' => $users->hasPages()
-                ]
+                    'has_pages' => $users->hasPages(),
+                ],
             ]),
             'state' => [
                 'page' => request()->page ?? 1,
                 'search' => request()->search ?? '',
-                'load' => 10
-            ]
+                'load' => 10,
+            ],
 
         ]);
     }
@@ -56,9 +55,9 @@ class UserController extends Controller
                 'title' => 'Tambah Pengguna',
                 'subtitle' => 'Buat pengguna baru di sini, klik simpan setelah selesai',
                 'method' => 'POST',
-                'action' => route('admin.users.store')
+                'action' => route('admin.users.store'),
             ],
-            'genders' => UserGender::options()
+            'genders' => UserGender::options(),
 
         ]);
     }
@@ -75,12 +74,14 @@ class UserController extends Controller
                 'avatar' => $this->uploadFile($request, 'avatar', 'users'),
                 'gender' => $request->gender,
                 'date_of_birth' => $request->date_of_birth,
-                'address' => $request->address
+                'address' => $request->address,
             ]);
             flashMessage(MessageType::CREATED->message('Pengguna'));
+
             return to_route('admin.users.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.users.index');
         }
     }
@@ -92,10 +93,10 @@ class UserController extends Controller
                 'title' => 'Edit pengguna',
                 'subtitle' => 'Edit pengguna di sini',
                 'method' => 'PUT',
-                'action' => route('admin.users.update', $user)
+                'action' => route('admin.users.update', $user),
             ],
             'genders' => UserGender::options(),
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -111,12 +112,14 @@ class UserController extends Controller
                 'avatar' => $this->updateFile($request, $user, 'avatar', 'users'),
                 'gender' => $request->gender,
                 'date_of_birth' => $request->date_of_birth,
-                'address' => $request->address
+                'address' => $request->address,
             ]);
             flashMessage(MessageType::UPDATED->message('pengguna'));
+
             return to_route('admin.users.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.users.index');
         }
     }
@@ -128,9 +131,11 @@ class UserController extends Controller
             $user->delete();
 
             flashMessage(MessageType::DELETED->message('Pengguna'));
+
             return to_route('admin.users.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.users.index');
         }
     }

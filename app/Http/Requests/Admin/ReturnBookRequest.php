@@ -24,14 +24,14 @@ class ReturnBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'condition' => ['required', new Enum(ReturnBookCondition::class)]
+            'condition' => ['required', new Enum(ReturnBookCondition::class)],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'condition' => 'Kondisi'
+            'condition' => 'Kondisi',
         ];
     }
 }

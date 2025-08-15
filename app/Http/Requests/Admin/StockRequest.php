@@ -36,7 +36,7 @@ class StockRequest extends FormRequest
             'damaged' => 'Rusak',
             'available' => 'Tersedia',
             'loan' => 'Dipinjam',
-            'lost' => 'Hilang'
+            'lost' => 'Hilang',
         ];
     }
 }

@@ -29,12 +29,12 @@ class FinesResource extends JsonResource
             ]),
             'return_book' => $this->whenLoaded('returnBook', [
                 'return_book_code' => $this->returnBook?->return_book_code,
-                'return_date' => Carbon::parse($this->returnBook?->return_date)->format('d M Y')
+                'return_date' => Carbon::parse($this->returnBook?->return_date)->format('d M Y'),
             ]),
             'user' => [
                 'id' => $this->user?->id,
-                'name' => $this->user?->name
-            ]
+                'name' => $this->user?->name,
+            ],
         ];
     }
 }

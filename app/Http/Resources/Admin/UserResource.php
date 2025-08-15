@@ -23,9 +23,9 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'avatar' => $this->avatar ? Storage::url($this->avatar) : null,
             'gender' => $this->gender,
-            'date_of_birth' => $this->date_of_birth ? $this->date_of_birth->format("d M Y") : null,
+            'date_of_birth' => $this->date_of_birth ? $this->date_of_birth->format('d M Y') : null,
             'address' => $this->address,
-            'created_at' => $this->created_at->format('d M Y')
+            'created_at' => $this->created_at->format('d M Y'),
         ];
     }
 }

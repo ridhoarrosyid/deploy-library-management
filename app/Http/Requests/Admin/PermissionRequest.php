@@ -23,8 +23,8 @@ class PermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:3', "max:255", Rule::unique("permissions")->ignore($this->permission)],
-            'guard_name' => ['nullable', 'in:web,api']
+            'name' => ['required', 'min:3', 'max:255', Rule::unique('permissions')->ignore($this->permission)],
+            'guard_name' => ['nullable', 'in:web,api'],
         ];
     }
 
@@ -32,7 +32,7 @@ class PermissionRequest extends FormRequest
     {
         return [
             'name' => 'Nama',
-            'guard_name' => 'Guard'
+            'guard_name' => 'Guard',
         ];
     }
 }

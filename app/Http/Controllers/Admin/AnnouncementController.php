@@ -8,7 +8,6 @@ use App\Http\Requests\Admin\AnnouncementRequest;
 use App\Http\Resources\Admin\AnnouncementResource;
 use App\Models\Announcement;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Throwable;
@@ -26,25 +25,25 @@ class AnnouncementController extends Controller
         return Inertia::render('Admin/Announcements/Index', [
             'page_settings' => [
                 'title' => 'Pengumuman',
-                'subtitile' => 'Menampilkan semua data pengumuman yang tersedia pada platform ini'
+                'subtitile' => 'Menampilkan semua data pengumuman yang tersedia pada platform ini',
             ],
             'announcements' => AnnouncementResource::collection($announcements)->additional([
                 'meta' => [
-                    'has_pages' => $announcements->hasPages()
-                ]
-            ])
+                    'has_pages' => $announcements->hasPages(),
+                ],
+            ]),
         ]);
     }
 
     public function create(): Response
     {
-        return Inertia::render("Admin/Announcements/Create", [
+        return Inertia::render('Admin/Announcements/Create', [
             'page_settings' => [
                 'title' => 'Tambah Pengumuman',
                 'subtitle' => 'Tambah pengumuman di sini. Klik simpan setelah selesai',
                 'method' => 'POST',
                 'action' => route('admin.announcements.create'),
-            ]
+            ],
         ]);
     }
 
@@ -62,23 +61,25 @@ class AnnouncementController extends Controller
             ]);
 
             flashMessage(MessageType::CREATED->message('Pengumuman'));
+
             return to_route('admin.announcements.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.announcements.index');
         }
     }
 
     public function edit(Announcement $announcement): Response
     {
-        return Inertia::render("Admin/Announcements/Edit", [
+        return Inertia::render('Admin/Announcements/Edit', [
             'page_settings' => [
                 'title' => 'Edit Pengumuman',
                 'subtitle' => 'Edit pengumuman di sini. Klik simpan setelah selesai',
                 'method' => 'PUT',
                 'action' => route('admin.announcements.update', [$announcement]),
             ],
-            'announcement' => $announcement
+            'announcement' => $announcement,
         ]);
     }
 
@@ -86,7 +87,7 @@ class AnnouncementController extends Controller
     {
         try {
             if ($request->is_active) {
-                Announcement::where('is_active', true)->where('id', "!=", $announcement->id)->update(['is_active' => false]);
+                Announcement::where('is_active', true)->where('id', '!=', $announcement->id)->update(['is_active' => false]);
             }
 
             $announcement->update([
@@ -96,10 +97,12 @@ class AnnouncementController extends Controller
             ]);
 
             flashMessage(MessageType::UPDATED->message('Pengumuman'));
+
             return to_route('admin.announcements.index');
         } catch (Throwable $e) {
             dd($e);
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.announcements.index');
         }
     }
@@ -109,9 +112,11 @@ class AnnouncementController extends Controller
         try {
             $announcement->delete();
             flashMessage(MessageType::DELETED->message('Pengumuman'));
+
             return to_route('admin.announcements.index');
         } catch (Throwable $e) {
             flashMessage(MessageType::ERRORS->message(error: $e->getMessage()), 'error');
+
             return to_route('admin.announcements.index');
         }
     }

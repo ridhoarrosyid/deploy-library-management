@@ -19,8 +19,8 @@ class MostFineMemberResource extends JsonResource
             'total_fee' => $this->total_fee,
             'user' => $this->whenLoaded('user', [
                 'id' => $this->user?->id,
-                'name' => $this->user?->name
-            ])
+                'name' => $this->user?->name,
+            ]),
         ];
     }
 }

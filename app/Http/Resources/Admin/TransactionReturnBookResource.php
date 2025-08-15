@@ -19,12 +19,12 @@ class TransactionReturnBookResource extends JsonResource
             'return_book_code' => $this->return_book_code,
             'book' => $this->whenLoaded('book', [
                 'id' => $this->book?->id,
-                'title' => $this->book?->title
+                'title' => $this->book?->title,
             ]),
             'user' => $this->whenLoaded('user', [
                 'id' => $this->user?->id,
-                'name' => $this->user?->name
-            ])
+                'name' => $this->user?->name,
+            ]),
         ];
     }
 }
