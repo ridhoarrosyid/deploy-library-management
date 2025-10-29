@@ -5,7 +5,7 @@ COPY . .
 
 # 1. Install dependensi PHP (Backend)
 # Kita sudah tidak butuh "npm install" atau "npm run build" di sini
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --optimize-autoloader --no-interaction
 
 # 2. Perbaiki Izin Folder
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
