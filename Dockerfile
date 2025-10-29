@@ -1,6 +1,14 @@
 FROM richarvey/nginx-php-fpm:latest
 
+WORKDIR /var/www/html
 COPY . .
+
+# 1. Install dependensi
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# 2. Perbaiki izin folder (INI SOLUSINYA)
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Image config
 ENV SKIP_COMPOSER 1
@@ -13,8 +21,6 @@ ENV REAL_IP_HEADER 1
 ENV APP_ENV production
 ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
-
-# Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 CMD ["/start.sh"]
