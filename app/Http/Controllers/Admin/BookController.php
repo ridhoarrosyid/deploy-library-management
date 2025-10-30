@@ -63,11 +63,11 @@ class BookController extends Controller
             'page_data' => [
                 'publication_years' => range(2000, now()->year),
                 'languages' => BookLanguage::options(),
-                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn ($item) => [
+                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn($item) => [
                     'value' => $item->id,
                     'label' => $item->name,
                 ]),
-                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn ($item) => [
+                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn($item) => [
                     'value' => $item->id,
                     'label' => $item->name,
                 ]),
@@ -119,11 +119,11 @@ class BookController extends Controller
             'page_data' => [
                 'publication_years' => range(2000, now()->year),
                 'languages' => BookLanguage::options(),
-                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn ($item) => [
+                'categories' => Category::query()->select(['id', 'name'])->get()->map(fn($item) => [
                     'value' => $item->id,
                     'label' => $item->name,
                 ]),
-                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn ($item) => [
+                'publishers' => Publisher::query()->select(['id', 'name'])->get()->map(fn($item) => [
                     'value' => $item->id,
                     'label' => $item->name,
                 ]),
@@ -187,7 +187,7 @@ class BookController extends Controller
 
         $last_book = Book::query()
             ->where('book_code', 'like', $book_code_prefix . '%')
-            ->orderByRaw('CAST(SUBSTRING(book_code,-4) AS UNSIGNED) DESC')
+            ->orderByRaw('CAST(SUBSTRING(book_code,-4) AS INTEGER) DESC')
             ->first();
 
         $order = 1;
